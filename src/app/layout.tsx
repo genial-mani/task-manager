@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import ToastProvider from "./components/providers/toastProvider";
+import ToastProvider from "../providers/ToastProvider";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import MaxWidthProvider from "@/providers/MaxWidthProvider";
 
 export const metadata: Metadata = {
   title: "Task Manager",
@@ -14,9 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <ToastProvider>{children}</ToastProvider>
-      </body>
+      <body className="bg-seasalt text-eerie-black poppins">
+        <Header />
+        <ToastProvider>
+          <MaxWidthProvider>{children}</MaxWidthProvider>
+        </ToastProvider>
+        <Footer />
+      </body>  
     </html>
   );
 }

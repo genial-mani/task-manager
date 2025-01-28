@@ -1,0 +1,135 @@
+"use client";
+
+import { motion } from "motion/react";
+import { toast } from "sonner";
+import PrioritySelector from "./PrioritySelector";
+import React, { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { TaskType } from "@/utils/Interfaces";
+
+export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispatch<SetStateAction<TaskType | null>>, setIsFormOpen: Dispatch<SetStateAction<boolean>>}) {
+  const [taskPriority, setPriority] = useState<string>("FIVE");
+  const [formData, setFormData] = useState<Record<string, any>>({
+    title: "",
+    desc: "",
+    status: "pending",
+    priority: taskPriority,
+    start: null,
+    end: null,
+  });
+
+  useEffect(()=>{
+    setFormData((prev)=>({
+      ...prev,
+      priority: taskPriority,
+    }));
+  },[taskPriority]);
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      console.log("formData:",formData)
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response?.ok) {
+        toast.error("error creating task, try again");
+        const data = await response?.json();
+        console.log("error creating task:", data?.error);
+      }
+      const data = await response?.json();
+      setNewTask(data?.task);
+    } catch (error) {
+      console.log("Error creating task", error);
+      toast.error("Error creating task");
+    }
+  };
+
+  const handleOnChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+      name === "start" || name === "end"
+        ? dayjs(value).toISOString() // Convert to ISO 8601
+        : value,
+    }));
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: "-20px" }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "backInOut" }}
+      className="flex flex-col items-center justify-center text-eerie-black mx-auto mt-10 border-2 border-eerie-black bg-seasalt md:max-w-md lg:max-w-xl py-6 px-5 rounded-lg"
+    >
+      <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="title"
+          placeholder="title"
+          required
+          autoFocus
+          className="w-full px-3 py-2 rounded-md"
+          value={formData?.title}
+          onChange={handleOnChange}
+        />
+        <textarea
+          name="desc" 
+          placeholder="description"
+          className="w-full px-3 py-2 min-h-20 rounded-md"
+          value={formData?.desc}
+          onChange={handleOnChange}
+        />
+        <div className="w-full flex justify-between mb-3">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="start">start</label>
+            <input
+              type="datetime-local"
+              id="start"
+              name="start"
+              className="outline-none rounded-md p-2"
+              value={formData?.start ? dayjs(formData.start).format("YYYY-MM-DDTHH:mm") : ""}
+              onChange={handleOnChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="end">end</label>
+            <input
+              type="datetime-local"
+              id="end"
+              name="end"
+              className="outline-none rounded-md p-2"
+              value={formData?.end ? dayjs(formData.end).format("YYYY-MM-DDTHH:mm") : ""}
+              onChange={handleOnChange}
+            />
+          </div>
+        </div>
+        <PrioritySelector setPriority={setPriority} taskPriority={taskPriority} />
+        <div className="w-full flex justify-end gap-5">
+        <button
+          type="button"
+          className=" px-3 py-2 bg-red-500 text-seasalt rounded-md"
+          onClick={()=> setIsFormOpen(false)}
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className=" px-3 py-2 bg-onyx text-seasalt rounded-md"
+        >
+          Add task
+        </button>
+        </div>
+        
+      </form>
+    </motion.div>
+  );
+}
