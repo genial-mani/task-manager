@@ -149,7 +149,7 @@ export default function TaskModal({
             <div className="w-full max-w-56 flex items-start h-fit p-1 px-2 gap-2 bg-purple-600 rounded-md">
             <input type="datetime-local" name="end" onChange={handleChange} className="w-full bg-transparent text-seasalt" value={formData?.end ? dayjs(formData?.end).format("YYYY-MM-DDTHH:mm") : ""} />
             </div>
-            <h2>Priority</h2>
+            <h2>priority</h2>
             <PrioritySelector setPriority={setPriority} taskPriority={taskPriority}/>
           <button type="submit" className="bg-outer-space py-2 rounded-md mt-2">save</button>
           </div>
