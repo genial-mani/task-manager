@@ -15,7 +15,7 @@ export async function GET(req: NextRequest,{params}:{params: {taskId: string}}){
         }
         const user = JSON.parse(userCookie);
         const userId = user.userId;
-        const {taskId} = await params; // giving error if not used await and req (params should be awaited before it is used)
+        const { taskId } = params; // giving error if not used await and req (params should be awaited before it is used)
         if(!taskId){
             return NextResponse.json({message: "No task id."},{status: 400})
         }
