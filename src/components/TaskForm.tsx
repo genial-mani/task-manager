@@ -54,14 +54,17 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
+    console.log(name, value);
+  
     setFormData((prev) => ({
       ...prev,
       [name]:
-      name === "start" || name === "end"
-        ? dayjs(value).toISOString() // Convert to ISO 8601
-        : value,
+        name === "start" || name === "end"
+          ? value ? dayjs(value).toISOString() : null
+          : value,
     }));
   };
+  
 
   return (
     <motion.div
@@ -96,7 +99,7 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
               id="start"
               name="start"
               className="outline-none rounded-md p-2"
-              value={formData?.start ? dayjs(formData.start).format("YYYY-MM-DDTHH:mm") : ""}
+              value={formData?.start ? dayjs(formData?.start).format("YYYY-MM-DDTHH:mm") : ""}
               onChange={handleOnChange}
             />
           </div>
@@ -107,7 +110,7 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
               id="end"
               name="end"
               className="outline-none rounded-md p-2"
-              value={formData?.end ? dayjs(formData.end).format("YYYY-MM-DDTHH:mm") : ""}
+              value={formData?.end ? dayjs(formData?.end).format("YYYY-MM-DDTHH:mm") : ""}
               onChange={handleOnChange}
             />
           </div>

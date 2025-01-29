@@ -6,9 +6,9 @@ import {motion} from "motion/react";
 
 export default function From({fields,onSubmit,submitButtonLabel,formName,classname}: FormProps) {
 
-    const [formData, setFormData] = useState<Record<string, any>>({});
+    const [formData, setFormData] = useState<Record<string, string>>({});
 
-    const handleChange = (name: string,value: any)=>{
+    const handleChange = (name: string,value: string)=>{
         setFormData((prevData) => ({...prevData,[name]: value}));
     }
 

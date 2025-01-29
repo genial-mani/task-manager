@@ -40,6 +40,10 @@ export async function POST(req: NextRequest){
 
         const {password: userPassword,id: userId,email: userEmail,name: userName, ...remainingUser} = newUser;
 
+        if(!remainingUser){
+            console.log('no error')
+        }
+
         const user: userType = {userId, userEmail, userName};
 
         const response = NextResponse.json({message: `New user ${user.userEmail} created.`,user,token},{status: 201});

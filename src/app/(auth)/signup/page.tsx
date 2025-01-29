@@ -24,7 +24,7 @@ export default function Register() {
     },
   ];
 
-  const handleSubmit = async (formData: Record<string,any>)=>{
+  const handleSubmit = async (formData: Record<string,string>)=>{
     try {
       toast.loading("Signing up...");
       const response = await fetch("api/auth/signup",{

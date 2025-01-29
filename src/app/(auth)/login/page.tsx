@@ -24,7 +24,7 @@ export default function Login() {
     },
   ];
 
-  const handleSubmit = async (formData: Record<string, any>) => {
+  const handleSubmit = async (formData: Record<string, string>) => {
     try {
       toast.loading("Loggin in...");
       const response = await fetch("/api/auth/login", {

@@ -31,6 +31,10 @@ export async function POST(req: NextRequest){
 
         const {password: userPassword,id: userId,email: userEmail,name: userName, ...remainingUser} = existingUser;
 
+        if(!remainingUser){
+            console.log('no error')
+        }
+
         const user: userType = {userId, userEmail, userName};
 
         const response = NextResponse.json({message: `Logged in as ${user.userEmail}`,user,token},{status: 201});

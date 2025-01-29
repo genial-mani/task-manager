@@ -104,11 +104,14 @@ export default function TaskModal({
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
     const {name, value} = event?.target;
-    setFormData((prev)=>({
-      ...prev,
-      [name]: name === 'start' || name === 'end' ? dayjs(value).toISOString() :  value,
-    }));
-
+    setFormData((prev) => ({
+          ...prev,
+          [name]:
+            name === "start" || name === "end"
+              ? value ? dayjs(value).toISOString() : null
+              : value,
+        }));
+        
   };
 
   return (
