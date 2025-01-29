@@ -47,15 +47,17 @@ export default function TaskModal({
         const response = await getTask(resolvedParams.id);
         if (!response.ok) {
           const data = await response.json();
-          console.error("Error fetching task:", data.message);
-          toast.error(data.message || "Failed to fetch task");
+          console.error("Error fetching task:", data?.error);
+          toast.error(data?.error || "Failed to fetch task");
           return;
         }
 
-        const result = await response.json();
+        if(response?.ok){
+          const result = await response.json();
         setTask(result);
         setPriority(result?.priority as string);
         setFormData(result);
+        }
       } catch (error) {
         console.error("Error in fetchTask:", error);
         toast.error("Failed to fetch task");
@@ -111,7 +113,7 @@ export default function TaskModal({
               ? value ? dayjs(value).toISOString() : null
               : value,
         }));
-        
+
   };
 
   return (
