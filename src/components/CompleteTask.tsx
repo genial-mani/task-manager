@@ -20,7 +20,7 @@ export default function CompleteTask({
       }
       setIsDone(true);
       const data = await response?.json();
-      toast.success(data?.message);
+      // toast.success(data?.message);
     } catch (error) {
       console.log(error);
       toast.error("Error completing task");

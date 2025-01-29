@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { Howl } from "howler";
 import Link from "next/link";
 import CompleteTask from "./CompleteTask";
+import { toast } from "sonner";
 export default function Task({ task }: { task: TaskType }) {
   const [isDone, setIsDone] = useState<boolean>(false);
   const sound = new Howl({
@@ -14,6 +15,7 @@ export default function Task({ task }: { task: TaskType }) {
   });
   useEffect(() => {
     if (isDone) {
+      toast.success('task is done')
       sound.play();
     }
   }, [isDone]);
