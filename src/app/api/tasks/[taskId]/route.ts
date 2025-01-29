@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server'
 
 
 
-export async function GET(req: NextRequest,{params}:{params: {taskId: string}}){
+export async function GET(req: NextRequest,context: { params: { taskId: string } }){
     try {
         const allCookies = await cookies();
         const userCookie = allCookies.get('user')?.value;
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest,{params}:{params: {taskId: string}}){
         }
         const user = JSON.parse(userCookie);
         const userId = user.userId;
-        const { taskId } = params; // giving error if not used await and req (params should be awaited before it is used)
+        const { taskId } = context?.params; // giving error if not used await and req (params should be awaited before it is used)
         if(!taskId){
             return NextResponse.json({message: "No task id."},{status: 400})
         }
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest,{params}:{params: {taskId: string}}){
 }
 
 
-export async function PATCH(req: NextRequest,{params}: {params: {taskId: string}}){
+export async function PATCH(req: NextRequest,context: { params: { taskId: string } }){
     try {
         const allCookies = await cookies();
         const userCookie = allCookies.get('user')?.value;
@@ -44,7 +44,7 @@ export async function PATCH(req: NextRequest,{params}: {params: {taskId: string}
         }
         const user = JSON.parse(userCookie);
         const userId = user.userId;
-    const {taskId} = params;
+    const {taskId} = context?.params;
     if(!taskId){
         return NextResponse.json({message: "No task id."},{status: 400});
     }
@@ -66,7 +66,7 @@ export async function PATCH(req: NextRequest,{params}: {params: {taskId: string}
     }
 }
 
-export async function PUT(req: NextRequest,{params}: {params: {taskId: string}}){
+export async function PUT(req: NextRequest,context: { params: { taskId: string } }){
     try {
         const allCookies = await cookies();
         const userCookie = allCookies.get('user')?.value;
@@ -80,7 +80,7 @@ export async function PUT(req: NextRequest,{params}: {params: {taskId: string}})
         if(!title){
             return NextResponse.json({error: "Title required."},{status: 400});
         }
-    const {taskId} = params; // must use await otherwise error occurs
+    const {taskId} = context?.params; // must use await otherwise error occurs
     if(!taskId){
         return NextResponse.json({error: "No task id."},{status: 400});
     }
@@ -104,7 +104,7 @@ export async function PUT(req: NextRequest,{params}: {params: {taskId: string}})
     }
 }
 
-export async function DELETE(req: NextRequest,{params}: {params: {taskId: string}}){
+export async function DELETE(req: NextRequest,context: { params: { taskId: string } }){
     try {
         const allCookies = await cookies();
         const userCookie = allCookies.get('user')?.value;
@@ -113,7 +113,7 @@ export async function DELETE(req: NextRequest,{params}: {params: {taskId: string
         }
         const user = JSON.parse(userCookie);
         const userId = user.id;
-    const {taskId} = params;
+    const {taskId} = context?.params;
     if(!taskId){
         return NextResponse.json({message: "No task id."},{status: 400});
     }
