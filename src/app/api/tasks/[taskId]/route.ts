@@ -44,7 +44,7 @@ export async function PATCH(req: NextRequest,{params}: {params: {taskId: string}
         }
         const user = JSON.parse(userCookie);
         const userId = user.userId;
-    const {taskId} = await params;
+    const {taskId} = params;
     if(!taskId){
         return NextResponse.json({message: "No task id."},{status: 400});
     }
@@ -80,7 +80,7 @@ export async function PUT(req: NextRequest,{params}: {params: {taskId: string}})
         if(!title){
             return NextResponse.json({error: "Title required."},{status: 400});
         }
-    const {taskId} = await params; // must use await otherwise error occurs
+    const {taskId} = params; // must use await otherwise error occurs
     if(!taskId){
         return NextResponse.json({error: "No task id."},{status: 400});
     }
@@ -113,7 +113,7 @@ export async function DELETE(req: NextRequest,{params}: {params: {taskId: string
         }
         const user = JSON.parse(userCookie);
         const userId = user.id;
-    const {taskId} = await params;
+    const {taskId} = params;
     if(!taskId){
         return NextResponse.json({message: "No task id."},{status: 400});
     }
