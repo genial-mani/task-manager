@@ -3,10 +3,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from 'next/server'
 import type { NextRequest  } from 'next/server'
 
-interface RouteContext {
-    params: { id: string };
-  }
-
 
 
 export async function GET(req: NextRequest, { params } : { params: Promise<{ id: string }> }){
