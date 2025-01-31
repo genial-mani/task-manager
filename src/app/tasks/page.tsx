@@ -23,7 +23,9 @@ export default function Tasks() {
   useEffect(() => {
     const fetchAllTasks = async () => {
       try {
-        const response = await fetch("/api/tasks");
+        const response = await fetch("/api/tasks",{
+          method: "GET",
+        });
 
         if (!response.ok) {
           // Only attempt to parse JSON if the content-type header suggests it

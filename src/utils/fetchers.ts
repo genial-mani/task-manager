@@ -2,7 +2,7 @@
 export async function fetchtasks(): Promise<Response> {
   try {
     const response = await fetch(
-      `https://doit-ochre.vercel.app/api/tasks`,
+      `/api/tasks`,
       {
         method: "GET",
         cache: "no-store",
@@ -27,7 +27,7 @@ export async function fetchtasks(): Promise<Response> {
 
   export async function getTask(id: string): Promise<Response>{
     try {
-      const response = await fetch(`https://doit-ochre.vercel.app/api/tasks/${id}`,{
+      const response = await fetch(`/api/tasks/${id}`,{
         method: 'GET',
         credentials: "include",
       });
