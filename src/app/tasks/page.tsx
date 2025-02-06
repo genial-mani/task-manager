@@ -272,7 +272,7 @@ export default function Tasks() {
             } top-12 left-[115px] min-w-fit min-h-fit bg-black text-seasalt p-2 rounded-xl`}
           >
             {["priority","startDate","endDate"].map((option)=>(
-              <div className="flex mt-2">
+              <div className="flex mt-2" key={option}>
               <input
                 id={`sortBy-${option}`}
                 type="checkbox"
