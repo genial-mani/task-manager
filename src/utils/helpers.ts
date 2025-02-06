@@ -33,6 +33,22 @@ export const priority = (p: string): string => {
         return "p5";
     }
   };
+export const priorityValues = (p: string): number => {
+    switch (p) {
+      case "ONE":
+        return 1;
+      case "TWO":
+        return 2;
+      case "THREE":
+        return 3;
+      case "FOUR":
+        return 4;
+      case "FIVE":
+        return 5;
+      default:
+        return 5;
+    }
+  };
 
 export const formatDate = (inputDate: number)=>{
 

@@ -155,7 +155,6 @@ export default function TaskModal({
           </div>
         </div>
         </form>
-        
       ) : (
         <p>loading...</p>
       )}

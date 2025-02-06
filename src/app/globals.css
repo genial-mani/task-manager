@@ -12,5 +12,5 @@
 
 button:active{
   transform: scale(0.95);
-  transition:  all ease-in-out;
+  transition: all ease-in-out;
 }
