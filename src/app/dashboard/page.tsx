@@ -3,11 +3,10 @@
 import Loading from "@/components/Loading";
 import PriorityDoughnutChart from "@/components/PriorityDoughnut";
 import { getDashboardStats } from "@/utils/fetchers";
-import { priorityFlag } from "@/utils/helpers";
 import { dashboardStats } from "@/utils/Interfaces";
 import { useEffect, useState } from "react";
-import { TiFlag } from "react-icons/ti";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 export default function Dashboard() {
   const [analytics, setAnalytics] = useState<dashboardStats>({
@@ -74,34 +73,36 @@ export default function Dashboard() {
     return (
       <div className="w-full max-w-full px-5 pt-5">
         <div className="flex flex-wrap gap-5 justify-evenly items-center">
-          <div className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+          <motion.div initial={{opacity: 0, y: -10}} whileInView={{opacity: 1, y:0}} viewport={{once: true,amount: 0.2}} transition={{duration: 0.6, ease: "easeInOut"}} className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
             <h2 className="text-center pt-2 font-medium text-lg">
               Total Tasks
             </h2>
             <p className="size-full grid place-items-center text-xl">
               {analytics?.totalTasks}
             </p>
-          </div>
-          <div className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+          </motion.div>
+          <motion.div initial={{opacity: 0, y: -10}} whileInView={{opacity: 1, y:0}} viewport={{once: true,amount: 0.2}} transition={{duration: 0.6, ease: "easeInOut"}} className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
             <h2 className="text-center pt-2 font-medium text-lg">
               Finished Tasks
             </h2>
             <p className="size-full grid place-items-center text-xl">
               {analytics?.totalFinishedTasks}
             </p>
-          </div>
-          <div className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+          </motion.div>
+          <motion.div initial={{opacity: 0, y: -10}} whileInView={{opacity: 1, y:0}} viewport={{once: true,amount: 0.2}} transition={{duration: 0.6, ease: "easeInOut"}} className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
             <h2 className="text-center pt-2 font-medium text-lg">
               Pending Tasks
             </h2>
             <p className="size-full grid place-items-center text-xl">
               {analytics?.totalPendingTasks}
             </p>
-          </div>
+          </motion.div>
         </div>
-        <div className="w-full max-w-full flex flex-wrap items-center justify-around py-5 sm:gap-2 gap-2">
+        <div className="w-full max-w-full flex flex-wrap items-center justify-around py-5 sm:gap-2 gap-2 mt-5">
           <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#dad1ff] p-3 rounded-xl">
-            <h1 className="text-center w-full font-semibold text-lg">Total Tasks</h1>
+            <h1 className="text-center w-full font-semibold text-lg">
+              Total Tasks
+            </h1>
             <PriorityDoughnutChart
               priorities={{
                 P1: analytics?.p1Tasks,
@@ -113,7 +114,9 @@ export default function Dashboard() {
             />
           </div>
           <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#dad1ff] p-3 rounded-xl">
-            <h1 className="text-center w-full font-semibold text-lg">Finished Tasks</h1>
+            <h1 className="text-center w-full font-semibold text-lg">
+              Finished Tasks
+            </h1>
             <PriorityDoughnutChart
               priorities={{
                 P1: analytics?.fp1Tasks,
@@ -125,7 +128,9 @@ export default function Dashboard() {
             />
           </div>
           <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#dad1ff] p-3 rounded-xl">
-            <h1 className="text-center w-full font-semibold text-lg">Pending Tasks</h1>
+            <h1 className="text-center w-full font-semibold text-lg">
+              Pending Tasks
+            </h1>
             <PriorityDoughnutChart
               priorities={{
                 P1: analytics?.pp1Tasks,
