@@ -7,6 +7,7 @@ import { dashboardStats } from "@/utils/Interfaces";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import NotFound from "@/components/NotFound";
 
 export default function Dashboard() {
   const [analytics, setAnalytics] = useState<dashboardStats>({
@@ -43,6 +44,7 @@ export default function Dashboard() {
         if (!response?.ok) {
           const data = await response?.json();
           toast?.error(data?.error);
+          setLoading(false);
         } else {
           const stats = await response?.json();
           setAnalytics(stats);
@@ -50,7 +52,7 @@ export default function Dashboard() {
           console.log(stats);
         }
       } catch (error) {
-        setLoading(true);
+        setLoading(false);
         console.log("error fetching dashboard stats.", error);
         toast.error("Unknown error ocuured");
       }
@@ -70,10 +72,16 @@ export default function Dashboard() {
       </div>
     );
   } else {
-    return (
+    return analytics?.totalTasks !== 0 ? (
       <div className="w-full max-w-full px-5 pt-5">
         <div className="flex flex-wrap gap-5 justify-evenly items-center">
-          <motion.div initial={{opacity: 0, y: -10}} whileInView={{opacity: 1, y:0}} viewport={{once: true,amount: 0.2}} transition={{duration: 0.6, ease: "easeInOut"}} className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl"
+          >
             <h2 className="text-center pt-2 font-medium text-lg">
               Total Tasks
             </h2>
@@ -81,7 +89,13 @@ export default function Dashboard() {
               {analytics?.totalTasks}
             </p>
           </motion.div>
-          <motion.div initial={{opacity: 0, y: -10}} whileInView={{opacity: 1, y:0}} viewport={{once: true,amount: 0.2}} transition={{duration: 0.6, ease: "easeInOut"}} className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl"
+          >
             <h2 className="text-center pt-2 font-medium text-lg">
               Finished Tasks
             </h2>
@@ -89,7 +103,13 @@ export default function Dashboard() {
               {analytics?.totalFinishedTasks}
             </p>
           </motion.div>
-          <motion.div initial={{opacity: 0, y: -10}} whileInView={{opacity: 1, y:0}} viewport={{once: true,amount: 0.2}} transition={{duration: 0.6, ease: "easeInOut"}} className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl"
+          >
             <h2 className="text-center pt-2 font-medium text-lg">
               Pending Tasks
             </h2>
@@ -173,6 +193,10 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+    ) : (
+      <motion.div initial={{opacity:0, y:-10}} animate={{opacity:1, y:0}} className="w-full max-w-full h-[90vh] flex items-center justify-center">
+        <NotFound title="No tasks found" desc="Add tasks to view analytics" />
+      </motion.div >
     );
   }
 }

@@ -10,6 +10,8 @@ import TaskForm from "@/components/TaskForm";
 import { motion } from "motion/react";
 import { priorityValues } from "@/utils/helpers";
 import Loading from "@/components/Loading";
+import { div } from "motion/react-client";
+import NotFound from "@/components/NotFound";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -25,7 +27,7 @@ export default function Tasks() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
   const sortDropdownRef = useRef<HTMLDivElement>(null);
-  const [loading,setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (newTask) {
@@ -62,16 +64,16 @@ export default function Tasks() {
             setLoading(false);
             toast.error(errorMessage || response.statusText);
           }
-          return; // Crucial: Stop execution after handling the error
+          return;
         }
 
-        const {pendingTasks} = await response.json();
+        const { pendingTasks } = await response.json();
         setTasks(Array.isArray(pendingTasks) ? pendingTasks : []);
         setLoading(false);
       } catch (error) {
         setLoading(false);
         console.error("Error fetching tasks:", error);
-        toast.error("An unexpected error occurred."); 
+        toast.error("An unexpected error occurred.");
       }
     };
 
@@ -115,7 +117,12 @@ export default function Tasks() {
       ) {
         setIsFilterOpen(false);
       }
-      if(sortRef?.current && !sortRef?.current?.contains(event.target as Node) && sortDropdownRef?.current && !sortDropdownRef?.current?.contains(event.target as Node)){
+      if (
+        sortRef?.current &&
+        !sortRef?.current?.contains(event.target as Node) &&
+        sortDropdownRef?.current &&
+        !sortDropdownRef?.current?.contains(event.target as Node)
+      ) {
         setIsSortOpen(false);
       }
     };
@@ -126,8 +133,7 @@ export default function Tasks() {
   }, []);
 
   const sortTasks = (tasksToSort: TaskType[]) => {
-
-    if (!sortBy) return tasksToSort;  
+    if (!sortBy) return tasksToSort;
 
     return [...tasksToSort].sort((a, b) => {
       if (sortBy === "priority") {
@@ -141,36 +147,46 @@ export default function Tasks() {
     });
   };
 
-  if(loading){
-      return <div className="w-full max-w-full h-[90vh] flex items-center justify-center"><Loading/></div>
-    }
+  if (loading) {
+    return (
+      <div className="w-full max-w-full h-[90vh] flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-full px-5 pt-5 min-h-screen">
       <div className="relative h-12 flex items-center justify-between">
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           onClick={() => setIsFormOpen(!isFormOpen)}
           className=" flex items-center justify-center gap-2 rounded-xl bg-eerie-black py-2 px-3 text-seasalt cursor-pointer"
         >
           <IoAdd size={25} />
           <p>Add task</p>
-        </div>
-        <div
+        </motion.div>
+        <motion.div
           className={`${
             isFormOpen ? "fixed" : "hidden"
           } w-full max-w-full min-h-screen top-0 left-0 bg-eerie-black bg-opacity-60 z-50`}
         >
           <TaskForm setNewTask={setNewTask} setIsFormOpen={setIsFormOpen} />
-        </div>
+        </motion.div>
         <div className="relative flex items-center justify-center gap-10 pr-5">
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             ref={filterDropdownRef}
             className="flex items-center justify-center gap-2 rounded-xl bg-black py-2 px-3 text-seasalt cursor-pointer"
             onClick={() => setIsFilterOpen(!isFilterOpen)}
           >
             <MdFilterAlt size={25} color="white" />
             <p>Filter</p>
-          </div>
+          </motion.div>
           <motion.div
             ref={dropdownRef}
             animate={
@@ -266,45 +282,67 @@ export default function Tasks() {
               </label>
             </div>
           </motion.div>
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="flex items-center justify-center gap-2 rounded-xl bg-black px-3 py-2 text-seasalt cursor-pointer"
             onClick={() => setIsSortOpen(!isSortOpen)}
             ref={sortRef}
           >
             <MdOutlineSort size={25} />
             Sort
-          </div>
+          </motion.div>
           <motion.div
-          animate={ !isSortOpen ? {y:-10,opacity: 0} : {y:0,opacity:1}}
-          transition={{duration: 0.3}}
-          ref={sortDropdownRef}
+            animate={
+              !isSortOpen ? { y: -10, opacity: 0 } : { y: 0, opacity: 1 }
+            }
+            transition={{ duration: 0.3 }}
+            ref={sortDropdownRef}
             className={`${
               isSortOpen ? "absolute" : "hidden"
             } top-12 left-[115px] min-w-fit min-h-fit bg-black text-seasalt p-2 rounded-xl`}
           >
-            {["priority","startDate","endDate"].map((option)=>(
+            {["priority", "startDate", "endDate"].map((option) => (
               <div className="flex mt-2" key={option}>
-              <input
-                id={`sortBy-${option}`}
-                type="checkbox"
-                checked={sortBy === option}
-                onChange={()=>setSortBy(sortBy === option ? null : option)}
-                className="size-6 bg-transparent border-[1.2px] border-slate-50 rounded-full cursor-pointer appearance-none checked:after:content-['✔'] flex items-center justify-center"
-              />
-              <label htmlFor={`sortBy-${option}`} className="pl-2 cursor-pointer">
-                {option === "priority" ? "Priority" : option  === "startDate" ? "Start Date" : "End Date"}
-              </label>
-            </div>
+                <input
+                  id={`sortBy-${option}`}
+                  type="checkbox"
+                  checked={sortBy === option}
+                  onChange={() => setSortBy(sortBy === option ? null : option)}
+                  className="size-6 bg-transparent border-[1.2px] border-slate-50 rounded-full cursor-pointer appearance-none checked:after:content-['✔'] flex items-center justify-center"
+                />
+                <label
+                  htmlFor={`sortBy-${option}`}
+                  className="pl-2 cursor-pointer"
+                >
+                  {option === "priority"
+                    ? "Priority"
+                    : option === "startDate"
+                    ? "Start Date"
+                    : "End Date"}
+                </label>
+              </div>
             ))}
           </motion.div>
         </div>
       </div>
-      <div className="w-full max-w-2xl pt-5 mx-auto">
-        {filteredTasks &&
-          filteredTasks?.map((task: TaskType) => (
-            <Task task={task} key={task?.id} />
-          ))}
-      </div>
+      {tasks?.length > 0 ? (
+        <div className="w-full max-w-2xl pt-5 mx-auto mb-5">
+          {filteredTasks?.length > 0 ? (
+            filteredTasks?.map((task: TaskType) => (
+              <Task task={task} key={task?.id} />
+            ))) : (
+              <div className="w-full max-w-full mt-[25vh] flex items-center justify-center">
+                <NotFound title="No tasks found" desc="Try changing the filters." />
+              </div>
+          )}
+        </div>
+      ) : (
+        <div className="w-full max-w-full h-[70vh] flex items-center justify-center">
+          <NotFound title="No tasks found" desc="Add a new task to get started." />
+        </div>
+      )}
     </div>
   );
 }

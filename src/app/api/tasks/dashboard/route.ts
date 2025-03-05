@@ -57,7 +57,7 @@ export async function GET(){
             }
         });
 
-        const avgTime = tt_taken/selectedFinshedTasks;
+        const avgTime = tt_taken/selectedFinshedTasks || 0;
 
         let ongoing_tasks = 0;
         let balanceTime = 0;

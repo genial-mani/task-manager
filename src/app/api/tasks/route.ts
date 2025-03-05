@@ -30,7 +30,6 @@ export async function GET(req: NextRequest) {
         const userWithTasks = await prisma.user.findUnique({
             where: {id: user?.userId},
             include:{tasks: {
-                where: {status: "pending"},
                 orderBy: {createdAt: 'desc'}
             }},
         });

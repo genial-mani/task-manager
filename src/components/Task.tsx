@@ -24,8 +24,11 @@ export default function Task({ task }: { task: TaskType }) {
 
   return (
     <motion.div
-      initial={{ y: 0, opacity: 1 }}
+      initial={{ y: 0, opacity: 0,scale: .5 }}
       animate={isDone || isDelete ? { y: -20, opacity: 0, display: "none" } : {}}
+      whileInView={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "backInOut" }}
+      viewport={{ once: true, amount: 0.2 }}
       className="w-full max-w-2xl h-44 rounded-xl bg-eerie-black text-seasalt px-3 py-2 flex items-start gap-2 shrink-0 mt-5"
     >
       {task?.status === "pending" && (
