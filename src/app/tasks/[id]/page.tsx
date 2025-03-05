@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import dayjs from "dayjs";
 import PrioritySelector from "@/components/PrioritySelector";
+import Loading from "@/components/Loading";
 
 export default function TaskPage({
   params,
@@ -96,7 +97,7 @@ export default function TaskPage({
           ? value
             ? dayjs(value).toISOString()
             : null
-          : value,
+          : value?.trim(),
     }));
   };
 
@@ -171,7 +172,7 @@ export default function TaskPage({
           </div>
         </form>
       ) : (
-        <p>loading...</p>
+        <div className="w-full max-w-full h-[90vh] flex items-center justify-center"><Loading/></div>
       )}
     </>
   );

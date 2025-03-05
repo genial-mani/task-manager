@@ -57,7 +57,7 @@ export async function PATCH(req: NextRequest,{ params } : { params: Promise<{ id
     }
     const updatedTask = await prisma.task.update({
         where: {id: id},
-        data: {status: 'finished'},
+        data: {status: 'finished',end: new Date()},
     }); 
     return NextResponse.json({updatedTask,message: "Task completed."},{status: 200});
     } catch (error) {
@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest,{ params } : { params: Promise<{ id: 
         const user = JSON.parse(userCookie);
         const userId = user.userId;
         const { title, desc="", status="pending", priority="FIVE", start=null,end=null}  = await req.json();
-        if(!title){
+        if(!title || title.trim() === ""){
             return NextResponse.json({error: "Title required."},{status: 400});
         }
     const {id} = (await params); // must use await otherwise error occurs
@@ -109,24 +109,24 @@ export async function DELETE(req: NextRequest,{ params } : { params: Promise<{ i
         const allCookies = await cookies();
         const userCookie = allCookies.get('user')?.value;
         if(!userCookie){
-            return NextResponse.json({message: "Unauthorized: No user found."},{status: 401});
+            return NextResponse.json({error: "Unauthorized: No user found."},{status: 401});
         }
         const user = JSON.parse(userCookie);
-        const userId = user.id;
+        const userId = user?.userId;
     const {id} = (await params);
     if(!id){
-        return NextResponse.json({message: "No task id."},{status: 400});
+        return NextResponse.json({error: "No task id."},{status: 400});
     }
     const task = await prisma.task.findUnique({where:{id: id}});
     if(!task){
-        return NextResponse.json({message: "No task found to delete."},{status: 400});
+        return NextResponse.json({error: "No task found to delete."},{status: 400});
     }
     if(task?.userId !== userId){
-        return NextResponse.json({message: "Unauthorized action not allowed."},{status: 401});
+        return NextResponse.json({error: "Unauthorized action not allowed."},{status: 401});
     }
     const deletedTask = await prisma.task.delete({where: {id: id}});
     if(!deletedTask){
-        return NextResponse.json({message: "Error deleting task. Try again."},{status: 400});
+        return NextResponse.json({error: "Error deleting task. Try again."},{status: 400});
     }
     return NextResponse.json({message: "Task deleted successfully."},{status: 200});
     } catch (error) {

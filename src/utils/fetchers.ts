@@ -67,4 +67,29 @@ export async function fetchtasks(): Promise<Response> {
       return errorResponse;
     }
   }
+
+  export async function getDashboardStats(): Promise<Response>{
+    try {
+      const response = await fetch(`http://localhost:3000/api/tasks/dashboard`,{
+        method: "GET",
+        credentials: "include",
+        next: {revalidate: 60}
+      })
+
+      return response;
+    } catch (error) {
+      console.error("Error completing task:",error);
+      const errorResponse = new Response(
+        JSON.stringify({ error: 'An error occurred' }),
+        {
+          status: 500,
+          statusText: 'Internal Server Error',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      return errorResponse;
+    }
+  }
   

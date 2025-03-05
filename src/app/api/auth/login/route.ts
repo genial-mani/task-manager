@@ -61,6 +61,6 @@ export async function POST(req: NextRequest){
         return response;
     }
     catch(error){
-        return NextResponse.json({error: "Something went wrong creating user"}, {status: 500});
+        return NextResponse.json({error: "Something went wrong logging user."}, {status: 500});
     }
 }

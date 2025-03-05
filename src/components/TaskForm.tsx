@@ -38,12 +38,21 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
         body: JSON.stringify(formData),
       });
       if (!response?.ok) {
-        toast.error("error creating task, try again");
         const data = await response?.json();
-        console.log("error creating task:", data?.error);
+        toast.error(data?.error);
+        console.log("error creating task:", data);
+        return;
       }
       const data = await response?.json();
       setNewTask(data?.task);
+      setFormData({
+        title: "",
+        desc: "",
+        status: "pending",
+        priority: "FIVE",
+        start: null,
+        end: null,
+      });
     } catch (error) {
       console.log("Error creating task", error);
       toast.error("Error creating task");
@@ -69,9 +78,9 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
   return (
     <motion.div
       initial={{ opacity: 0, y: "-20px" }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "backInOut" }}
-      className="flex flex-col items-center justify-center text-eerie-black mx-auto mt-10 border-2 border-eerie-black bg-seasalt md:max-w-md lg:max-w-xl py-6 px-5 rounded-lg"
+      className="flex flex-col items-center justify-center text-eerie-black mx-auto mt-20 border-2 bg-seasalt md:max-w-md lg:max-w-xl py-6 px-5 rounded-lg"
     >
       <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
         <input

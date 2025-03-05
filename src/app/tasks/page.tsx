@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import TaskForm from "@/components/TaskForm";
 import { motion } from "motion/react";
 import { priorityValues } from "@/utils/helpers";
+import Loading from "@/components/Loading";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -24,6 +25,7 @@ export default function Tasks() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
   const sortDropdownRef = useRef<HTMLDivElement>(null);
+  const [loading,setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (newTask) {
@@ -33,6 +35,7 @@ export default function Tasks() {
 
   useEffect(() => {
     const fetchAllTasks = async () => {
+      setLoading(true);
       try {
         const response = await fetch("/api/tasks", {
           method: "GET",
@@ -47,6 +50,7 @@ export default function Tasks() {
               "Error fetching tasks:",
               data?.message || response.statusText
             );
+            setLoading(false);
             toast.error(data?.message || response.statusText);
           } else {
             // Handle non-JSON error responses (e.g., plain text)
@@ -55,16 +59,19 @@ export default function Tasks() {
               "Error fetching tasks:",
               errorMessage || response.statusText
             );
+            setLoading(false);
             toast.error(errorMessage || response.statusText);
           }
           return; // Crucial: Stop execution after handling the error
         }
 
-        const result = await response.json();
-        setTasks(Array.isArray(result) ? result : []);
+        const {pendingTasks} = await response.json();
+        setTasks(Array.isArray(pendingTasks) ? pendingTasks : []);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching tasks:", error);
-        toast.error("An unexpected error occurred."); // More user-friendly message
+        toast.error("An unexpected error occurred."); 
       }
     };
 
@@ -133,6 +140,10 @@ export default function Tasks() {
       return 0;
     });
   };
+
+  if(loading){
+      return <div className="w-full max-w-full h-[90vh] flex items-center justify-center"><Loading/></div>
+    }
 
   return (
     <div className="w-full max-w-full px-5 pt-5 min-h-screen">

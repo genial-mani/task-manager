@@ -1,9 +1,173 @@
-'use client'
+"use client";
+
+import Loading from "@/components/Loading";
+import PriorityDoughnutChart from "@/components/PriorityDoughnut";
+import { getDashboardStats } from "@/utils/fetchers";
+import { priorityFlag } from "@/utils/helpers";
+import { dashboardStats } from "@/utils/Interfaces";
+import { useEffect, useState } from "react";
+import { TiFlag } from "react-icons/ti";
+import { toast } from "sonner";
 
 export default function Dashboard() {
-  
+  const [analytics, setAnalytics] = useState<dashboardStats>({
+    totalTasks: 0,
+    totalPendingTasks: 0,
+    totalFinishedTasks: 0,
+    p1Tasks: 0,
+    p2Tasks: 0,
+    p3Tasks: 0,
+    p4Tasks: 0,
+    p5Tasks: 0,
+    pp1Tasks: 0,
+    pp2Tasks: 0,
+    pp3Tasks: 0,
+    pp4Tasks: 0,
+    pp5Tasks: 0,
+    fp1Tasks: 0,
+    fp2Tasks: 0,
+    fp3Tasks: 0,
+    fp4Tasks: 0,
+    fp5Tasks: 0,
+    balanceTasksTime: "",
+    avgTaskTime: "",
+    runningTasks: 0,
+    missedTasks: 0,
+  });
+  const [loading, setLoading] = useState<boolean>(false);
 
-  return <div className="grid place-items-center">Dashboard
-    <h2>will be added soon..</h2>
-  </div>;
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        const response = await getDashboardStats();
+        if (!response?.ok) {
+          const data = await response?.json();
+          toast?.error(data?.error);
+        } else {
+          const stats = await response?.json();
+          setAnalytics(stats);
+          setLoading(false);
+          console.log(stats);
+        }
+      } catch (error) {
+        setLoading(true);
+        console.log("error fetching dashboard stats.", error);
+        toast.error("Unknown error ocuured");
+      }
+    };
+    fetchStats();
+    const interval = setInterval(() => {
+      fetchStats();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full max-w-full h-[90vh] flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-full max-w-full px-5 pt-5">
+        <div className="flex flex-wrap gap-5 justify-evenly items-center">
+          <div className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+            <h2 className="text-center pt-2 font-medium text-lg">
+              Total Tasks
+            </h2>
+            <p className="size-full grid place-items-center text-xl">
+              {analytics?.totalTasks}
+            </p>
+          </div>
+          <div className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+            <h2 className="text-center pt-2 font-medium text-lg">
+              Finished Tasks
+            </h2>
+            <p className="size-full grid place-items-center text-xl">
+              {analytics?.totalFinishedTasks}
+            </p>
+          </div>
+          <div className="flex flex-col w-48 h-32 bg-[#dad1ff] rounded-xl">
+            <h2 className="text-center pt-2 font-medium text-lg">
+              Pending Tasks
+            </h2>
+            <p className="size-full grid place-items-center text-xl">
+              {analytics?.totalPendingTasks}
+            </p>
+          </div>
+        </div>
+        <div className="w-full max-w-full flex flex-wrap items-center justify-around py-5 sm:gap-2 gap-2">
+          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#dad1ff] p-3 rounded-xl">
+            <h1 className="text-center w-full font-semibold text-lg">Total Tasks</h1>
+            <PriorityDoughnutChart
+              priorities={{
+                P1: analytics?.p1Tasks,
+                P2: analytics?.p2Tasks,
+                P3: analytics?.p3Tasks,
+                P4: analytics?.p4Tasks,
+                P5: analytics?.p5Tasks,
+              }}
+            />
+          </div>
+          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#dad1ff] p-3 rounded-xl">
+            <h1 className="text-center w-full font-semibold text-lg">Finished Tasks</h1>
+            <PriorityDoughnutChart
+              priorities={{
+                P1: analytics?.fp1Tasks,
+                P2: analytics?.fp2Tasks,
+                P3: analytics?.fp3Tasks,
+                P4: analytics?.fp4Tasks,
+                P5: analytics?.fp5Tasks,
+              }}
+            />
+          </div>
+          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#dad1ff] p-3 rounded-xl">
+            <h1 className="text-center w-full font-semibold text-lg">Pending Tasks</h1>
+            <PriorityDoughnutChart
+              priorities={{
+                P1: analytics?.pp1Tasks,
+                P2: analytics?.pp2Tasks,
+                P3: analytics?.pp3Tasks,
+                P4: analytics?.pp4Tasks,
+                P5: analytics?.pp5Tasks,
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-10 md:gap-28 lg:gap-52 items-center justify-center py-5">
+          <div className="flex flex-col">
+            <p className="text-center font-medium text-lg p-2">
+              Avg time for a task
+            </p>
+            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
+              {analytics?.avgTaskTime}
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <p className="text-center font-medium text-lg p-2">
+              On going tasks
+            </p>
+            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
+              {analytics?.runningTasks}
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <p className="text-center font-medium text-lg p-2">Balance time</p>
+            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
+              {analytics?.balanceTasksTime}
+            </div>
+          </div>
+        </div>
+        <div className="w-full max-w-full px-1 py-5 flex flex-wrap justify-center">
+          <div className="min-w-36 flex gap-3 bg-red-600 px-3 py-2 text-slate-50 rounded-lg">
+            <p>Missed tasks</p>
+            <span>{analytics?.missedTasks}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }

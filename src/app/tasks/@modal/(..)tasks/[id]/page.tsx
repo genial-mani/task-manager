@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import dayjs from "dayjs";
 import PrioritySelector from "@/components/PrioritySelector";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
 
 export default function TaskModal({
   params,
@@ -156,7 +157,7 @@ export default function TaskModal({
         </div>
         </form>
       ) : (
-        <p>loading...</p>
+        <div className="w-full max-w-full h-[90vh] flex items-center justify-center"><Loading/></div>
       )}
     </div>
   );
