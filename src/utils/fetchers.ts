@@ -70,10 +70,12 @@ export async function fetchtasks(): Promise<Response> {
 
   export async function getDashboardStats(): Promise<Response>{
     try {
-      const response = await fetch(`http://localhost:3000/api/tasks/dashboard`,{
+      const response = await fetch(`/api/tasks/dashboard`,{
         method: "GET",
         credentials: "include",
-        next: {revalidate: 60}
+        headers: {
+          'Content-Type': 'application/json',
+        }
       })
 
       return response;

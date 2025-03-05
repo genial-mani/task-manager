@@ -25,8 +25,8 @@ export default function NotFound({
                  Z"
           fill="black"
           stroke="black"
-          stroke-width="2"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeLinecap="round"
         ></path>
       </svg>
       <div className="mx-2.5 overflow-hidden w-full">
