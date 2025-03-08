@@ -56,7 +56,7 @@ export default function Register() {
       transition={{ duration: 0.5, ease: "backInOut" }}
       className="flex flex-col items-center justify-center mx-auto mt-10 border-2 border-seasalt md:max-w-md lg:max-w-lg py-6 px-5 rounded-lg"
     >
-      <h1 className="text-4xl mb-5">Signup</h1>
+      <h1 className="text-4xl mb-5">Signup for challenging <p className="text-purple-500">Endevour</p></h1>
       <Form
         fields={fields}
         onSubmit={handleSubmit}

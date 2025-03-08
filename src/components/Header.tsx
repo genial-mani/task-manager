@@ -4,6 +4,12 @@ import { getCurrentUser } from "@/utils/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { MdSpaceDashboard } from "react-icons/md";
+import { FaTasks } from "react-icons/fa";
+import { HiOutlineLogin } from "react-icons/hi";
+
+
+
 import Logout from "./Logout";
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,27 +40,30 @@ export default function Header() {
           href={"/dashboard"}
           className={
             pathname === "/dashboard"
-              ? "mr-5 font-bold text-center"
-              : "mr-5 text-center"
+              ? "mr-5 font-bold text-center flex items-center justify-center gap-1"
+              : "mr-5 text-center flex items-center justify-center gap-1"
           }
         >
+          <MdSpaceDashboard fill={pathname === "/dashboard" ? '#a855f7' : '#fff'}/>
           Dashboard
         </Link>
         <Link
           href={"/tasks"}
           className={
             pathname === "/tasks"
-              ? "w-12 mr-5 font-bold text-center"
-              : "w-12 mr-5 text-center"
+              ? "min-w-12 mr-5 font-bold text-center flex items-center justify-center gap-1"
+              : "min-w-12 mr-5 text-center flex items-center justify-center gap-1"
           }
         >
+          <FaTasks fill={pathname === "/tasks" ? '#a855f7' : '#fff'}/>
           Tasks
         </Link>
         {!isLoggedIn ? (
           <Link
             href={"/login"}
-            className="py-2 px-3 rounded-lg bg-onyx text-seasalt"
+            className=" flex items-center gap-1 py-2 px-3 rounded-lg bg-onyx text-purple-500"
           >
+            <HiOutlineLogin/>
             Login
           </Link>
         ) : (

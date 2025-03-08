@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-seasalt text-eerie-black poppins">
+      <body className="bg-[#f3fcfd] text-eerie-black poppins">
         <Header />
         <ToastProvider>
           <MaxWidthProvider>{children}</MaxWidthProvider>

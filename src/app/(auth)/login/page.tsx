@@ -4,6 +4,9 @@ import Form from "@/components/Form";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { FaHandPointRight } from "react-icons/fa";
+import Link from "next/link";
+
 
 export default function Login() {
   const router = useRouter();
@@ -64,13 +67,14 @@ export default function Login() {
       transition={{ duration: 0.5, ease: "backInOut" }}
       className="flex flex-col items-center justify-center mx-auto mt-10 border-2 border-seasalt md:max-w-md lg:max-w-lg py-6 px-5 rounded-lg"
     >
-      <h1 className="text-4xl mb-5">Login</h1>
+      <h1 className="text-4xl mb-5 flex flex-col items-center justify-center">Welcome back! <p className="text-2xl">Just get better...</p></h1>
       <Form
         fields={fields}
         onSubmit={handleSubmit}
         submitButtonLabel="Login"
         classname={"w-full max-w-64 sm:max-w-sm lg:max-w-lg flex flex-col"}
       />
+      <p className="flex items-center gap-2 mt-2">Looking to signup its here <FaHandPointRight fill="#a855f7"/><Link href={'/signup'} >click me!</Link></p>
     </motion.div>
   );
 }

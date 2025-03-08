@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { HiOutlineLogout } from "react-icons/hi";
 
 export default function Logout() {
     const router = useRouter();
@@ -9,7 +10,7 @@ export default function Logout() {
             const data = await response.json();
             if(response.ok){
                 toast.success(data.message);
-                router.push('/login');
+                router.push('/');
             }
         } catch (error) {
             console.log(error);
@@ -17,5 +18,5 @@ export default function Logout() {
         }
     }
 
-    return <div onClick={handleLogout} className="py-2 px-3 rounded-lg bg-seasalt text-eerie-black cursor-pointer">Logout</div>;
+    return <div onClick={handleLogout} className="flex items-center gap-1 py-2 px-3 rounded-lg bg-[#a855f7] text-seasalt cursor-pointer"> <HiOutlineLogout/> Logout</div>;
 }
