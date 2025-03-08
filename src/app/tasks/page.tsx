@@ -10,7 +10,6 @@ import TaskForm from "@/components/TaskForm";
 import { motion } from "motion/react";
 import { priorityValues } from "@/utils/helpers";
 import Loading from "@/components/Loading";
-import { div } from "motion/react-client";
 import NotFound from "@/components/NotFound";
 
 export default function Tasks() {
@@ -23,6 +22,7 @@ export default function Tasks() {
   const [newTask, setNewTask] = useState<TaskType | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
+  const [isDeletedId, setIsDeletedId] = useState<string>("");
   const filterDropdownRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
@@ -131,6 +131,13 @@ export default function Tasks() {
       window.removeEventListener("click", handleOutsideClick);
     };
   }, []);
+
+  useEffect(()=>{
+    if(isDeletedId !== ""){
+      setTasks((prev)=>prev?.filter((p)=>p?.id !== isDeletedId));
+      setIsDeletedId("");
+    }
+  },[isDeletedId])
 
   const sortTasks = (tasksToSort: TaskType[]) => {
     if (!sortBy) return tasksToSort;
@@ -331,7 +338,7 @@ export default function Tasks() {
         <div className="w-full max-w-2xl pt-5 mx-auto mb-5">
           {filteredTasks?.length > 0 ? (
             filteredTasks?.map((task: TaskType) => (
-              <Task task={task} key={task?.id} />
+              <Task task={task} key={task?.id} setIsDeletedId={setIsDeletedId} />
             ))) : (
               <div className="w-full max-w-full mt-[25vh] flex items-center justify-center">
                 <NotFound title="No tasks found" desc="Try changing the filters." />

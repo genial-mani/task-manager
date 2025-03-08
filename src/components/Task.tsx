@@ -8,7 +8,7 @@ import Link from "next/link";
 import CompleteTask from "./CompleteTask";
 import { toast } from "sonner";
 import DeleteTask from "./DeleteTask";
-export default function Task({ task }: { task: TaskType }) {
+export default function Task({ task,setIsDeletedId }: { task: TaskType,setIsDeletedId:React.Dispatch<React.SetStateAction<string>> }) {
   const [isDone, setIsDone] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const sound = new Howl({
@@ -22,6 +22,12 @@ export default function Task({ task }: { task: TaskType }) {
     }
   }, [isDone]);
 
+  useEffect(() => {
+    if (isDelete) {
+      setIsDeletedId(task?.id);
+    }
+  }, [isDelete]);
+
   return (
     <motion.div
       initial={{ y: 0, opacity: 0,scale: .5 }}
@@ -34,16 +40,14 @@ export default function Task({ task }: { task: TaskType }) {
       {task?.status === "pending" && (
         <CompleteTask taskId={task?.id} setIsDone={setIsDone} />
       )}
+          <Link href={`/tasks/${task?.id}`} className="w-full h-full">
       <div className="w-full h-full flex flex-col gap-2">
         <div className="flex justify-between items-center">
-          <Link href={`/tasks/${task?.id}`}>
             <h2 className="text-lg font-semibold">
               {task?.title.length <= 45
                 ? task?.title
                 : task?.title.slice(0, 45) + "..."}
             </h2>
-          </Link>
-          <DeleteTask taskId={task?.id} setIsDelete={setIsDelete}/>
         </div>
         <p>
           {task?.desc.length <= 100
@@ -71,6 +75,8 @@ export default function Task({ task }: { task: TaskType }) {
           </div>
         </div>
       </div>
+            </Link>
+            <DeleteTask taskId={task?.id} setIsDelete={setIsDelete}/>
     </motion.div>
   );
 }

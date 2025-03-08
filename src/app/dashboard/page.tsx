@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import NotFound from "@/components/NotFound";
+import { IoInformationCircle } from "react-icons/io5";
+import Tooltip from '@mui/material/Tooltip';
+import { Button } from "@mui/material";
 
 export default function Dashboard() {
   const [analytics, setAnalytics] = useState<dashboardStats>({
@@ -164,23 +167,43 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-wrap gap-10 md:gap-28 lg:gap-52 items-center justify-center py-5">
           <div className="flex flex-col">
-            <p className="text-center font-medium text-lg p-2">
+            <p className="text-center font-medium text-lg p-2 flex gap-2 items-center">
               Avg time for a task
+              <Tooltip color="a855f7" title={
+    <span style={{ fontSize: "14px", color: "#efefef" }}>
+      Average time taken to finish a task.
+    </span>
+  } placement="top" arrow >
+            <IoInformationCircle size={20}/>
+          </Tooltip>
             </p>
             <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
               {analytics?.avgTaskTime}
             </div>
           </div>
           <div className="flex flex-col">
-            <p className="text-center font-medium text-lg p-2">
+            <p className="text-center font-medium text-lg p-2 flex gap-2 items-center">
               On going tasks
+              <Tooltip color="a855f7" title={
+    <span style={{ fontSize: "14px", color: "#efefef" }}>
+      Presently ongoing tasks.
+    </span>
+  } placement="top" arrow >
+            <IoInformationCircle size={20}/>
+          </Tooltip>
             </p>
             <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
               {analytics?.runningTasks}
             </div>
           </div>
           <div className="flex flex-col">
-            <p className="text-center font-medium text-lg p-2">Balance time</p>
+            <p className="text-center font-medium text-lg p-2 flex gap-2 items-center">Balance time <Tooltip color="a855f7" title={
+    <span style={{ fontSize: "14px", color: "#efefef" }}>
+      Time left to complete ongoing task(s).
+    </span>
+  } placement="top" arrow >
+            <IoInformationCircle size={20}/>
+          </Tooltip></p>
             <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
               {analytics?.balanceTasksTime}
             </div>
