@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import NotFound from "@/components/NotFound";
 import { IoInformationCircle } from "react-icons/io5";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import { Button } from "@mui/material";
 
 export default function Dashboard() {
@@ -169,13 +169,18 @@ export default function Dashboard() {
           <div className="flex flex-col">
             <p className="text-center font-medium text-lg p-2 flex gap-2 items-center">
               Avg time for a task
-              <Tooltip color="a855f7" title={
-    <span style={{ fontSize: "14px", color: "#efefef" }}>
-      Average time taken to finish a task.
-    </span>
-  } placement="top" arrow >
-            <IoInformationCircle size={20}/>
-          </Tooltip>
+              <Tooltip
+                color="a855f7"
+                title={
+                  <span style={{ fontSize: "14px", color: "#efefef" }}>
+                    Average time taken to finish a task.
+                  </span>
+                }
+                placement="top"
+                arrow
+              >
+                <IoInformationCircle size={20} />
+              </Tooltip>
             </p>
             <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
               {analytics?.avgTaskTime}
@@ -184,26 +189,39 @@ export default function Dashboard() {
           <div className="flex flex-col">
             <p className="text-center font-medium text-lg p-2 flex gap-2 items-center">
               On going tasks
-              <Tooltip color="a855f7" title={
-    <span style={{ fontSize: "14px", color: "#efefef" }}>
-      Presently ongoing tasks.
-    </span>
-  } placement="top" arrow >
-            <IoInformationCircle size={20}/>
-          </Tooltip>
+              <Tooltip
+                color="a855f7"
+                title={
+                  <span style={{ fontSize: "14px", color: "#efefef" }}>
+                    Presently ongoing tasks.
+                  </span>
+                }
+                placement="top"
+                arrow
+              >
+                <IoInformationCircle size={20} />
+              </Tooltip>
             </p>
             <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
               {analytics?.runningTasks}
             </div>
           </div>
           <div className="flex flex-col">
-            <p className="text-center font-medium text-lg p-2 flex gap-2 items-center">Balance time <Tooltip color="a855f7" title={
-    <span style={{ fontSize: "14px", color: "#efefef" }}>
-      Time left to complete ongoing task(s).
-    </span>
-  } placement="top" arrow >
-            <IoInformationCircle size={20}/>
-          </Tooltip></p>
+            <p className="text-center font-medium text-lg p-2 flex gap-2 items-center">
+              Balance time{" "}
+              <Tooltip
+                color="a855f7"
+                title={
+                  <span style={{ fontSize: "14px", color: "#efefef" }}>
+                    Time left to complete ongoing task(s).
+                  </span>
+                }
+                placement="top"
+                arrow
+              >
+                <IoInformationCircle size={20} />
+              </Tooltip>
+            </p>
             <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
               {analytics?.balanceTasksTime}
             </div>
@@ -217,9 +235,13 @@ export default function Dashboard() {
         </div>
       </div>
     ) : (
-      <motion.div initial={{opacity:0, y:-10}} animate={{opacity:1, y:0}} className="w-full max-w-full h-[90vh] flex items-center justify-center">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-full h-[90vh] flex items-center justify-center"
+      >
         <NotFound title="No tasks found" desc="Add tasks to view analytics" />
-      </motion.div >
+      </motion.div>
     );
   }
 }
