@@ -3,15 +3,15 @@
 import Loading from "@/components/Loading";
 import PriorityDoughnutChart from "@/components/PriorityDoughnut";
 import { getDashboardStats } from "@/utils/fetchers";
-import { dashboardStats } from "@/utils/Interfaces";
+import { dashboardStats, userType } from "@/utils/Interfaces";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import NotFound from "@/components/NotFound";
 import { IoInformationCircle } from "react-icons/io5";
 import Tooltip from "@mui/material/Tooltip";
-import { Button } from "@mui/material";
-
+import { useRouter } from "next/navigation";
+import { getCurrentUser } from "@/utils/auth";
 export default function Dashboard() {
   const [analytics, setAnalytics] = useState<dashboardStats>({
     totalTasks: 0,
@@ -38,6 +38,25 @@ export default function Dashboard() {
     missedTasks: 0,
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const [user,setUser] = useState<userType | null>(null);
+  const router = useRouter();
+
+  useEffect(()=>{
+    const fetchUser = async()=>{
+      try {
+        const userpayload = await getCurrentUser();
+        if(userpayload === null){
+          router.replace('/')
+        }
+        setUser(userpayload)
+        return;
+      } catch (error) {
+        console.log("error fetching user:",error);
+        toast.error("Error fetching user details try logging again.")
+      }
+    }
+    fetchUser()
+  },[user])
 
   useEffect(() => {
     const fetchStats = async () => {
