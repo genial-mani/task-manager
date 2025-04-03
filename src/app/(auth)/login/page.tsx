@@ -39,10 +39,7 @@ export default function Login() {
       });
       toast.dismiss();
       const data = await response.json();
-      if (response.ok) {
-        toast.success(data.message);
-        router.push("/tasks");
-      }
+      
       if (!response.ok) {
         toast.error(data.error);
         if(response?.status === 404)
@@ -54,6 +51,8 @@ export default function Login() {
           },1000)
         }
       }
+      toast.success(data.message);
+        router.push("/tasks");
     } catch (error) {
       toast.error("Error while loggin in.");
       console.error(error);
