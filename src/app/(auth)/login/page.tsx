@@ -50,7 +50,7 @@ export default function Login() {
           setTimeout(()=>{
             toast.dismiss();
             toast.info('redirected to singup page')
-            router.push('/signup');
+            router.replace('/signup');
           },1000)
         }
       }
