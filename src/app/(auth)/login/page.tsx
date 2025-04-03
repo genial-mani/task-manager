@@ -51,9 +51,9 @@ export default function Login() {
           },1000)
         }
       }
-      router.refresh();
       toast.success(data.message);
-        router.push("/tasks");
+      router.refresh();
+      router.replace("/tasks");
     } catch (error) {
       toast.error("Error while loggin in.");
       console.error(error);
