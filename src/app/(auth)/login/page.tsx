@@ -51,6 +51,7 @@ export default function Login() {
           },1000)
         }
       }
+      router.refresh();
       toast.success(data.message);
         router.push("/tasks");
     } catch (error) {
