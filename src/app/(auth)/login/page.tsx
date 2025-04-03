@@ -41,7 +41,7 @@ export default function Login() {
       const data = await response.json();
       if (response.ok) {
         toast.success(data.message);
-        router.replace("/tasks");
+        router.push("/tasks");
       }
       if (!response.ok) {
         toast.error(data.error);
