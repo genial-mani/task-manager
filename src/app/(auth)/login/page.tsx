@@ -42,16 +42,13 @@ export default function Login() {
       const data = await response.json();
       
       if (response.ok) {
-        console.log("success");
-        router.push("/tasks");
-        console.log("success");
         toast.success(data.message);
         toast.dismiss();
         toast.info("Redirecting to tasks page...");
         setTimeout(() => {
           toast.dismiss();
-          window.location.href = "/tasks";
-        }, 300);
+          router.push("/tasks");
+        }, 400);
       }
       else{
         toast.error(data.error);
