@@ -6,7 +6,7 @@ export default function Logout() {
     const router = useRouter();
     const handleLogout = async ()=>{
         try {
-            const response = await fetch('/api/auth/logout',{method: 'POST'})
+            const response = await fetch('/api/auth/logout',{method: 'POST',cache: 'no-store'});
             const data = await response.json();
             if(response.ok){
                 toast.success(data.message);

@@ -32,6 +32,7 @@ export default function Login() {
       toast.loading("Loggin in...");
       const response = await fetch("/api/auth/login", {
         method: "POST",
+        cache: "no-store",
         headers: {
           "content-type": "application/json",
         },

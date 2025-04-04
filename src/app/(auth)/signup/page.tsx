@@ -29,6 +29,7 @@ export default function Register() {
       toast.loading("Signing up...");
       const response = await fetch("api/auth/signup",{
         method: 'POST',
+        cache: 'no-store',
         headers: {
           'content-type': 'application/json',
         },
