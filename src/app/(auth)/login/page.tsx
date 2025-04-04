@@ -47,13 +47,13 @@ export default function Login() {
           setTimeout(()=>{
             toast.dismiss();
             toast.info('redirected to singup page')
-            router.replace('/signup');
+            router.push('/signup');
           },1000)
         }
       }
       else{
         toast.success(data.message);
-        router.replace("/tasks");
+        router.push("/tasks");
       }
     } catch (error) {
       toast.error("Error while loggin in.");

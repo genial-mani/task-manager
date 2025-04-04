@@ -10,7 +10,11 @@ export default function Logout() {
             const data = await response.json();
             if(response.ok){
                 toast.success(data.message);
-                router.replace('/');
+                router.push('/');
+            }
+            else{
+                toast.error(data.error);
+                console.log(data.error);
             }
         } catch (error) {
             console.log(error);
