@@ -47,6 +47,7 @@ export default function Login() {
         toast.info("Redirecting to tasks page...");
         setTimeout(() => {
           toast.dismiss();
+          router.refresh();
           router.push("/tasks");
         }, 400);
       }
