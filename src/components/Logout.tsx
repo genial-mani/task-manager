@@ -9,8 +9,8 @@ export default function Logout() {
             const response = await fetch('/api/auth/logout',{method: 'POST',cache: 'no-store'});
             const data = await response.json();
             if(response.ok){
-                toast.success(data.message);
                 router.push('/');
+                toast.success(data.message);
             }
             else{
                 toast.error(data.error);

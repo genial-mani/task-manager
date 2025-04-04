@@ -39,8 +39,8 @@ export default function Register() {
       const data = await response.json();
       console.log(data);
       if(response.ok){
-        toast.success(data.message);
         router.push("/");
+        toast.success(data.message);
       }else{
         toast.warning(data.error);
       }
