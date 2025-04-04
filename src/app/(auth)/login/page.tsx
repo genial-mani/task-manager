@@ -48,10 +48,10 @@ export default function Login() {
         toast.success(data.message);
         toast.dismiss();
         toast.info("Redirecting to tasks page...");
-        toast.dismiss();
         setTimeout(() => {
+          toast.dismiss();
           router.push("/tasks");
-        }, 100);
+        }, 300);
       }
       else{
         toast.error(data.error);
