@@ -50,7 +50,7 @@ export default function Login() {
         toast.info("Redirecting to tasks page...");
         setTimeout(() => {
           toast.dismiss();
-          router.push("/tasks");
+          window.location.href = "/tasks";
         }, 300);
       }
       else{
