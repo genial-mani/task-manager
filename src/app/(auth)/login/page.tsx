@@ -47,11 +47,11 @@ export default function Login() {
         console.log("success");
         toast.success(data.message);
         toast.dismiss();
-        toast.loading("Redirecting to tasks page...");
+        toast.info("Redirecting to tasks page...");
+        toast.dismiss();
         setTimeout(() => {
           router.push("/tasks");
         }, 100);
-        toast.dismiss();
       }
       else{
         toast.error(data.error);
@@ -65,6 +65,7 @@ export default function Login() {
         }
       }
     } catch (error) {
+      toast.dismiss();
       toast.error("Error while loggin in.");
       console.error(error);
     }
