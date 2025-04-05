@@ -29,7 +29,7 @@ export default function Logout() {
 
     useEffect(()=>{
         if(!user){
-          router.push("/");
+          window.location.href = "/";
         }
       },[user])
 
