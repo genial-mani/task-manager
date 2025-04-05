@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FaHandPointRight } from "react-icons/fa";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { userType } from "@/utils/Interfaces";
 
 
 export default function Login() {
   const router = useRouter();
+  const [user, setUser] = useState<userType | null>(null);
   const fields = [
     {
       name: "email",
@@ -42,6 +45,7 @@ export default function Login() {
       const data = await response.json();
       
       if (response.ok) {
+        localStorage.setItem("user", data.user);
         toast.success(data.message);
         toast.dismiss();
         toast.info("Redirecting to tasks page...");
@@ -67,6 +71,16 @@ export default function Login() {
       console.error(error);
     }
   };
+
+  useEffect(()=>{
+    const userData = localStorage.getItem("user");
+    if(userData){
+      setUser(userData as unknown as userType);
+    }
+    if(user){
+      router.push("/tasks");
+    }
+  },[user])
 
   return (
     <motion.div

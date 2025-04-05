@@ -4,9 +4,12 @@ import {motion} from "motion/react";
 import Form from "@/components/Form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { userType } from "@/utils/Interfaces";
 
 export default function Register() {
   const router = useRouter();
+    const [user, setUser] = useState<userType | null>(null);
   const fields = [
     {
       name: "email",
@@ -39,6 +42,7 @@ export default function Register() {
       const data = await response.json();
       console.log(data);
       if(response.ok){
+        localStorage.setItem("user", data.user);
         console.log('success')
         router.push("/");
         console.log('success')
@@ -51,6 +55,16 @@ export default function Register() {
       toast.error("Something went wrong");
     }
   }
+
+  useEffect(()=>{
+      const userData = localStorage.getItem("user");
+      if(userData){
+        setUser(userData as unknown as userType);
+      }
+      if(user){
+        router.push("/tasks");
+      }
+    },[user])
 
   return (
     <motion.div
