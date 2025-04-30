@@ -82,7 +82,7 @@ export default function Dashboard() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="flex flex-col w-48 h-32 bg-gray-50 rounded-xl"
+            className="flex flex-col w-48 h-32 bg-[#a855f720] rounded-xl"
           >
             <h2 className="text-center pt-2 font-medium text-lg">
               Total Tasks
