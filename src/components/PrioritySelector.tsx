@@ -52,7 +52,7 @@ export default function PrioritySelector({ taskPriority, setPriority}: { taskPri
         {priorityValues?.map((value, index) => (
           <div
             key={index}
-            className="w-full max-w-56 flex items-center h-fit p-1 px-4 justify-between hover:bg-purple-700"
+            className="w-full max-w-56 flex items-center h-fit p-1 px-4 justify-between hover:bg-purple-700 cursor-pointer"
             onClick={() => {
               setPriority(value);
               setToggle(false);

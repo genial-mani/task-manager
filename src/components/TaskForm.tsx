@@ -82,6 +82,7 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
       transition={{ duration: 0.5, ease: "backInOut" }}
       className="flex flex-col items-center justify-center text-eerie-black mx-auto mt-20 border-2 bg-seasalt md:max-w-md lg:max-w-xl py-6 px-5 rounded-lg"
     >
+      <h2 className=" w-full pb-3 text-2xl flex justify-start">New task</h2>
       <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
         <input
           type="text"
