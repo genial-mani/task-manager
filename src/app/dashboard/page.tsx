@@ -75,14 +75,14 @@ export default function Dashboard() {
     );
   } else {
     return analytics?.totalTasks !== 0 ? (
-      <div className="w-full max-w-full px-5 pt-5">
+      <div className="w-full max-w-full px-5 pt-5 bg-[white]">
         <div className="flex flex-wrap gap-5 justify-evenly items-center">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="flex flex-col w-48 h-32 bg-[#a855f720] rounded-xl"
+            className="flex flex-col w-48 h-32 bg-[#eef9f8] rounded-xl"
           >
             <h2 className="text-center pt-2 font-medium text-lg">
               Total Tasks
@@ -96,7 +96,7 @@ export default function Dashboard() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="flex flex-col w-48 h-32 bg-[#a855f720] rounded-xl"
+            className="flex flex-col w-48 h-32 bg-[#eef9f8] rounded-xl"
           >
             <h2 className="text-center pt-2 font-medium text-lg">
               Finished Tasks
@@ -110,7 +110,7 @@ export default function Dashboard() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="flex flex-col w-48 h-32 bg-[#a855f720] rounded-xl"
+            className="flex flex-col w-48 h-32 bg-[#eef9f8] rounded-xl"
           >
             <h2 className="text-center pt-2 font-medium text-lg">
               Pending Tasks
@@ -121,7 +121,7 @@ export default function Dashboard() {
           </motion.div>
         </div>
         <div className="w-full max-w-full flex flex-wrap items-center justify-around py-5 sm:gap-2 gap-2 mt-5">
-          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#a855f720] p-3 rounded-xl">
+          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#eef9f8] p-3 rounded-xl">
             <h1 className="text-center w-full font-semibold text-lg">
               Total Tasks
             </h1>
@@ -135,7 +135,7 @@ export default function Dashboard() {
               }}
             />
           </div>
-          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#a855f720] p-3 rounded-xl">
+          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#eef9f8] p-3 rounded-xl">
             <h1 className="text-center w-full font-semibold text-lg">
               Finished Tasks
             </h1>
@@ -149,7 +149,7 @@ export default function Dashboard() {
               }}
             />
           </div>
-          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#a855f720] p-3 rounded-xl">
+          <div className="w-full max-w-md sm:max-w-96 md:max-w-56 lg:max-w-72 xl:max-w-96 flex flex-wrap bg-[#eef9f8] p-3 rounded-xl">
             <h1 className="text-center w-full font-semibold text-lg">
               Pending Tasks
             </h1>
@@ -181,7 +181,7 @@ export default function Dashboard() {
                 <IoInformationCircle size={20} />
               </Tooltip>
             </p>
-            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
+            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-[#eef9f8]">
               {analytics?.avgTaskTime}
             </div>
           </div>
@@ -201,7 +201,7 @@ export default function Dashboard() {
                 <IoInformationCircle size={20} />
               </Tooltip>
             </p>
-            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
+            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-[#eef9f8]">
               {analytics?.runningTasks}
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function Dashboard() {
                 <IoInformationCircle size={20} />
               </Tooltip>
             </p>
-            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-purple-500">
+            <div className="size-44 bg-black rounded-full flex items-center justify-center text-base font-medium text-[#eef9f8]">
               {analytics?.balanceTasksTime}
             </div>
           </div>
