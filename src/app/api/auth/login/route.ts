@@ -40,25 +40,29 @@ export async function POST(req: NextRequest){
         const response = NextResponse.json({message: `Logged in as ${user.userEmail}`,user,token},{status: 201});
 
         response.cookies.set(
-            {
-                name: "user",
-                value: JSON.stringify(user),
-                httpOnly: false,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "lax",
-                path: "/",
-                maxAge: 60 * 60 * 24,
-            }
-        );
+        'user',
+        JSON.stringify(user),
+        {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24,
+        }
+);
 
         response.cookies.set(
-            {name: 'token',
-            value: token, 
+        'token',
+        token,
+        { 
             httpOnly: true,
-            secure: true,
-            path: "/",
-            maxAge: 60 * 60 * 24,
-        });
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: Number(process.env.JWT_EXPIRES_IN),
+        }
+    );
+
         return response;
     }
     catch(error){

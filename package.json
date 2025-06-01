@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@iconify/react": "^6.0.0",
     "@types/bcrypt": "^5.0.2",
     "@types/howler": "^2.2.12",
     "@types/jsonwebtoken": "^9.0.7",

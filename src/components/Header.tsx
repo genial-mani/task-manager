@@ -4,9 +4,8 @@ import { getCurrentUser } from "@/utils/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { MdSpaceDashboard } from "react-icons/md";
-import { FaTasks } from "react-icons/fa";
 import { HiOutlineLogin } from "react-icons/hi";
+import { Icon } from "@iconify/react";
 
 
 
@@ -34,7 +33,7 @@ export default function Header() {
 
   return (
     <div className="w-full max-w-full h-12 px-5 py-7 bg-eerie-black text-seasalt flex items-center justify-between">
-      <Link href={"/"}>DoIt</Link>
+      <Link href={"/"} className="flex gap-1 text-[#a855f7]"><Icon icon="mdi:todo-auto" width="24" height="24" />{" "} DoIt</Link>
       <div className="flex items-center justify-between mr-5 gap-5">
         <Link
           href={"/dashboard"}
@@ -44,7 +43,7 @@ export default function Header() {
               : "mr-5 text-center flex items-center justify-center gap-1"
           }
         >
-          <MdSpaceDashboard fill={pathname === "/dashboard" ? '#a855f7' : '#fff'}/>
+          <Icon icon="material-symbols:dashboard-rounded" width="24" height="24" color={pathname === "/dashboard" ? '#a855f7' : '#fff'} />
           Dashboard
         </Link>
         <Link
@@ -55,7 +54,7 @@ export default function Header() {
               : "min-w-12 mr-5 text-center flex items-center justify-center gap-1"
           }
         >
-          <FaTasks fill={pathname === "/tasks" ? '#a855f7' : '#fff'}/>
+          <Icon icon="arcticons:everyday-tasks" width="24" height="24" strokeWidth={3} color={`${pathname === "/tasks" ? '#a855f7' : '#fff'}`} />
           Tasks
         </Link>
         {!isLoggedIn ? (

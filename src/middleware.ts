@@ -2,24 +2,37 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "./utils/jwt";
 
-export async function middleware(req: NextRequest) {
+export async function middleware(request: NextRequest) {
     
-    try {
-        const token = req.cookies.get("token")?.value;
-        if (!token) {
-            return NextResponse.redirect(new URL("/login", req.url));
-        }
-        const payload = await jwtVerify(token);
-        if (!payload) {
-            return NextResponse.redirect(new URL("/login", req.url));
-        }
-        return NextResponse.next();
-    } catch (error) {
-        console.error("JWT verification error:", error);
-        return NextResponse.redirect(new URL("/login", req.url));
+    const token = request.cookies.get('token')?.value;
+    console.log('Token from middleware:', token);
+    
+    const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login');
+
+    if (isProtectedRoute) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
     }
+
+    const payload = await jwtVerify(token);
+    if (!payload) {
+      const response = NextResponse.redirect(new URL('/login', request.url));
+      response.cookies.delete('token');
+      return response;
+    }
+
+  } else {
+    const payload = await jwtVerify(token as string);
+    if (token && payload) {
+      return NextResponse.redirect(new URL('/tasks', request.url));
+    }
+  }
+
+  return NextResponse.next();
+
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/tasks/:path*"],
+    matcher: ['/dashboard/:path*', '/tasks/:path*'],
+    runtime: 'nodejs',
 };

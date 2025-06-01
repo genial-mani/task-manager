@@ -3,6 +3,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+html{
+  scroll-behavior: smooth;
+}
+
 .poppins{
   font-family: "Poppins", serif;
   font-optical-sizing: auto;

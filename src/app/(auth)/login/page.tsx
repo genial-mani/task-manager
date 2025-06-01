@@ -6,13 +6,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FaHandPointRight } from "react-icons/fa";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { userType } from "@/utils/Interfaces";
-
 
 export default function Login() {
   const router = useRouter();
-  const [user, setUser] = useState<userType | null>(null);
   const fields = [
     {
       name: "email",
@@ -48,39 +44,21 @@ export default function Login() {
         localStorage.setItem("user", data.user);
         toast.success(data.message);
         toast.dismiss();
-        toast.info("Redirecting to tasks page...");
-        setTimeout(() => {
-          toast.dismiss();
-          window.location.href = "/tasks";
-        },300);
+        // toast.info("Redirecting to tasks page..."); this line is not needed because already redirecting
+        router.push("/tasks");
       }
       else{
         toast.error(data.error);
-        if(response?.status === 404)
-        {
-          setTimeout(()=>{
-            toast.dismiss();
-            toast.info('redirected to singup page')
-            router.push('/signup');
-          },1000)
+          toast.dismiss();
+          toast.info('user not found redirected to singup page')
+          router.push('/signup');
         }
-      }
-    } catch (error) {
+      } catch (error) {
       toast.dismiss();
       toast.error("Error while loggin in.");
       console.error(error);
     }
   };
-
-  useEffect(()=>{
-    const userData = localStorage.getItem("user");
-    if(userData){
-      setUser(userData as unknown as userType);
-    }
-    if(user){
-      router.push("/tasks");
-    }
-  },[user])
 
   return (
     <motion.div
