@@ -46,6 +46,7 @@ export default function Login() {
         toast.dismiss();
         // toast.info("Redirecting to tasks page..."); this line is not needed because already redirecting
         router.push("/tasks");
+        window.location.href = "/tasks";
       }
       else{
         toast.error(data.error);
