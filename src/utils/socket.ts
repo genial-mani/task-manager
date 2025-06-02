@@ -4,11 +4,16 @@ let socket: Socket | null = null;
 
 export const initiateSocket = ()=>{
     if(!socket){
-        socket = io("http://localhost:4000",{
+        const URL =
+      process.env.NODE_ENV === "production"
+        ? "https://task-manager-production-6d59.up.railway.app"
+        : "http://localhost:4000";
+        socket = io(URL,{
+            transports: ['websocket'],
             withCredentials: true,
 
         })
-        console.log("Socket connected");
+        console.log("Socket connected to:", URL);
     }
 }
 
