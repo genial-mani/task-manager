@@ -1,14 +1,14 @@
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 
-const PORT = 4000
+const PORT = 10000
 
 const httpServer = createServer()
 
 
 const io = new Server(httpServer, {
     cors: {
-        origin: ["https://doit-ochre.vercel.app","http://localhost:3000"],
+        origin: ["https://doit-ochre.vercel.app","http://localhost:10000"],
         methods: ["GET", "POST"],
         credentials: true,
     },

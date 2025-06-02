@@ -7,7 +7,7 @@ export const initiateSocket = ()=>{
         const URL =
       process.env.NODE_ENV === "production"
         ? "https://task-manager-production-6d59.up.railway.app"
-        : "http://localhost:4000";
+        : "http://localhost:10000";
         socket = io(URL,{
             transports: ['websocket'],
             withCredentials: true,
