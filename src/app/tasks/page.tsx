@@ -11,6 +11,7 @@ import { motion } from "motion/react";
 import { priorityValues } from "@/utils/helpers";
 import Loading from "@/components/Loading";
 import NotFound from "@/components/NotFound";
+import { getSocket, initiateSocket } from "@/utils/socket";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -132,12 +133,33 @@ export default function Tasks() {
     };
   }, []);
 
-  useEffect(()=>{
-    if(isDeletedId !== ""){
-      setTasks((prev)=>prev?.filter((p)=>p?.id !== isDeletedId));
+  useEffect(() => {
+    if (isDeletedId !== "") {
+      setTasks((prev) => prev?.filter((p) => p?.id !== isDeletedId));
       setIsDeletedId("");
     }
-  },[isDeletedId])
+  }, [isDeletedId]);
+
+  useEffect(() => {
+  initiateSocket(); // ensure socket connection
+  const socket = getSocket();
+
+  const handleTaskDone = (taskId: string) => {
+    setTasks(prev =>
+      prev.map(task =>
+        task.id === taskId ? { ...task, status: "finished" } : task
+      )
+    );
+    // toast.success(`Task marked as done`);
+  };
+
+  socket.on("task-done", handleTaskDone);
+
+  return () => {
+    socket.off("task-done", handleTaskDone);
+  };
+}, []);
+
 
   const sortTasks = (tasksToSort: TaskType[]) => {
     if (!sortBy) return tasksToSort;
@@ -338,16 +360,27 @@ export default function Tasks() {
         <div className="w-full max-w-2xl pt-5 mx-auto mb-5">
           {filteredTasks?.length > 0 ? (
             filteredTasks?.map((task: TaskType) => (
-              <Task task={task} key={task?.id} setIsDeletedId={setIsDeletedId} />
-            ))) : (
-              <div className="w-full max-w-full mt-[25vh] flex items-center justify-center">
-                <NotFound title="No tasks found" desc="Try changing the filters." />
-              </div>
+              <Task
+                task={task}
+                key={task?.id}
+                setIsDeletedId={setIsDeletedId}
+              />
+            ))
+          ) : (
+            <div className="w-full max-w-full mt-[25vh] flex items-center justify-center">
+              <NotFound
+                title="No tasks found"
+                desc="Try changing the filters."
+              />
+            </div>
           )}
         </div>
       ) : (
         <div className="w-full max-w-full h-[70vh] flex items-center justify-center">
-          <NotFound title="No tasks found" desc="Add a new task to get started." />
+          <NotFound
+            title="No tasks found"
+            desc="Add a new task to get started."
+          />
         </div>
       )}
     </div>

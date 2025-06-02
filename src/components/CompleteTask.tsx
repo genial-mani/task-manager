@@ -1,5 +1,6 @@
 import { completeTask } from "@/utils/fetchers";
-import { Dispatch, SetStateAction } from "react";
+import { getSocket, initiateSocket } from "@/utils/socket";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "sonner";
 
 export default function CompleteTask({
@@ -11,6 +12,11 @@ export default function CompleteTask({
 }) {
   // when user checks the box then useEffect should trigger then toast comes once
 
+
+  useEffect(() => {
+    initiateSocket(); // Ensure socket is connected
+  }, []);
+
   async function handleClick() {
     try {
       const response = await completeTask(taskId);
@@ -18,8 +24,11 @@ export default function CompleteTask({
         const data = await response?.json();
         toast.error(data?.message);
       }
-      setIsDone(true);
       const data = await response?.json();
+      
+      const socket = getSocket();
+      socket.emit("mark-task-done", taskId);
+      setIsDone(true);
       console.log(data)
       // toast.success(data?.message);
     } catch (error) {
