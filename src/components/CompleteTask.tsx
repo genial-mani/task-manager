@@ -12,7 +12,6 @@ export default function CompleteTask({
 }) {
   // when user checks the box then useEffect should trigger then toast comes once
 
-
   useEffect(() => {
     initiateSocket(); // Ensure socket is connected
   }, []);
@@ -25,11 +24,11 @@ export default function CompleteTask({
         toast.error(data?.message);
       }
       const data = await response?.json();
-      
+
       const socket = getSocket();
       socket.emit("mark-task-done", taskId);
       setIsDone(true);
-      console.log(data)
+      console.log(data);
       // toast.success(data?.message);
     } catch (error) {
       console.log(error);

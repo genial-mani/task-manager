@@ -12,6 +12,7 @@ import { priorityValues } from "@/utils/helpers";
 import Loading from "@/components/Loading";
 import NotFound from "@/components/NotFound";
 import { getSocket, initiateSocket } from "@/utils/socket";
+import { Icon } from "@iconify/react";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -213,7 +214,7 @@ export default function Tasks() {
             className="flex items-center justify-center gap-2 rounded-xl bg-black py-2 px-3 text-seasalt cursor-pointer"
             onClick={() => setIsFilterOpen(!isFilterOpen)}
           >
-            <MdFilterAlt size={25} color="white" />
+            <Icon icon="line-md:filter" width="24" height="24" />
             <p>Filter</p>
           </motion.div>
           <motion.div
@@ -343,7 +344,7 @@ export default function Tasks() {
                 />
                 <label
                   htmlFor={`sortBy-${option}`}
-                  className="pl-2 cursor-pointer"
+                  className="pl-2 min-w-fit cursor-pointer"
                 >
                   {option === "priority"
                     ? "Priority"

@@ -5,7 +5,7 @@ import { jwtVerify } from "./utils/jwt";
 export async function middleware(request: NextRequest) {
     
     const token = request.cookies.get('token')?.value;
-    console.log('Token from middleware:', token);
+    // console.log('Token from middleware:', token);
     
     const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login');
 

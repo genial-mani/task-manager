@@ -3,11 +3,23 @@
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import PrioritySelector from "./PrioritySelector";
-import React, { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import dayjs from "dayjs";
 import { TaskType } from "@/utils/Interfaces";
 
-export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispatch<SetStateAction<TaskType | null>>, setIsFormOpen: Dispatch<SetStateAction<boolean>>}) {
+export default function TaskForm({
+  setNewTask,
+  setIsFormOpen,
+}: {
+  setNewTask: Dispatch<SetStateAction<TaskType | null>>;
+  setIsFormOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const [taskPriority, setPriority] = useState<string>("FIVE");
   const [formData, setFormData] = useState<Record<string, any>>({
     title: "",
@@ -18,17 +30,17 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
     end: null,
   });
 
-  useEffect(()=>{
-    setFormData((prev)=>({
+  useEffect(() => {
+    setFormData((prev) => ({
       ...prev,
       priority: taskPriority,
     }));
-  },[taskPriority]);
+  }, [taskPriority]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      console.log("formData:",formData)
+      console.log("formData:", formData);
       const response = await fetch("/api/tasks", {
         method: "POST",
         credentials: "include",
@@ -53,6 +65,9 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
         start: null,
         end: null,
       });
+      setPriority("FIVE");
+      setIsFormOpen(false);
+      toast.success("Task created successfully");
     } catch (error) {
       console.log("Error creating task", error);
       toast.error("Error creating task");
@@ -64,16 +79,17 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
   ) => {
     const { name, value } = event.target;
     console.log(name, value);
-  
+
     setFormData((prev) => ({
       ...prev,
       [name]:
         name === "start" || name === "end"
-          ? value ? dayjs(value).toISOString() : null
+          ? value
+            ? dayjs(value).toISOString()
+            : null
           : value,
     }));
   };
-  
 
   return (
     <motion.div
@@ -95,7 +111,7 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
           onChange={handleOnChange}
         />
         <textarea
-          name="desc" 
+          name="desc"
           placeholder="description"
           className="w-full px-3 py-2 min-h-20 rounded-md"
           value={formData?.desc}
@@ -109,7 +125,11 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
               id="start"
               name="start"
               className="outline-none rounded-md p-2"
-              value={formData?.start ? dayjs(formData?.start).format("YYYY-MM-DDTHH:mm") : ""}
+              value={
+                formData?.start
+                  ? dayjs(formData?.start).format("YYYY-MM-DDTHH:mm")
+                  : ""
+              }
               onChange={handleOnChange}
             />
           </div>
@@ -120,28 +140,34 @@ export default function TaskForm({setNewTask, setIsFormOpen}:{setNewTask: Dispat
               id="end"
               name="end"
               className="outline-none rounded-md p-2"
-              value={formData?.end ? dayjs(formData?.end).format("YYYY-MM-DDTHH:mm") : ""}
+              value={
+                formData?.end
+                  ? dayjs(formData?.end).format("YYYY-MM-DDTHH:mm")
+                  : ""
+              }
               onChange={handleOnChange}
             />
           </div>
         </div>
-        <PrioritySelector setPriority={setPriority} taskPriority={taskPriority} />
+        <PrioritySelector
+          setPriority={setPriority}
+          taskPriority={taskPriority}
+        />
         <div className="w-full flex justify-end gap-5">
-        <button
-          type="button"
-          className=" px-3 py-2 bg-red-500 text-seasalt rounded-md"
-          onClick={()=> setIsFormOpen(false)}
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className=" px-3 py-2 bg-onyx text-seasalt rounded-md"
-        >
-          Add task
-        </button>
+          <button
+            type="button"
+            className=" px-3 py-2 bg-red-500 text-seasalt rounded-md"
+            onClick={() => setIsFormOpen(false)}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className=" px-3 py-2 bg-onyx text-seasalt rounded-md"
+          >
+            Add task
+          </button>
         </div>
-        
       </form>
     </motion.div>
   );

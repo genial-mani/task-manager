@@ -16,21 +16,38 @@ export function priorityFlag(p: string): string {
         return "gray";
     }
   }
+
+  export const taskbg = (p: string): string => {
+    switch(p){
+      case "ONE":
+        return "#fae0e4";
+      case "TWO":
+        return "#ffd7ba";
+      case "THREE":
+        return "#e3f2fd";
+      case "FOUR":
+        return "#fff6cc";
+      case "FIVE":
+        return "#ffffff";
+      default:
+        return "#f8f9fa";
+    }
+  }
   
 export const priority = (p: string): string => {
     switch (p) {
       case "ONE":
-        return "p1";
+        return "Urgent";
       case "TWO":
-        return "p2";
+        return "High";
       case "THREE":
-        return "p3";
+        return "Medium";
       case "FOUR":
-        return "p4";
+        return "Low";
       case "FIVE":
-        return "p5";
+        return "Normal";
       default:
-        return "p5";
+        return "Normal";
     }
   };
 export const priorityValues = (p: string): number => {
