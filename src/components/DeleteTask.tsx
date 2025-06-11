@@ -1,15 +1,16 @@
 "use client";
 
+import useTaskStore from "@/hooks/useTaskStore";
 import { MdDelete } from "react-icons/md";
 import { toast } from "sonner";
 
 export default function DeleteTask({
   taskId,
-  setIsDelete,
 }: {
   taskId: string;
-  setIsDelete: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+
+  const setDeletedId = useTaskStore((state)=> state.setDeletedId);
   async function handleDelete() {
     try {
       const response = await fetch(`/api/tasks/${taskId}`, {
@@ -22,7 +23,7 @@ export default function DeleteTask({
         toast.error(data?.error);
       }
       if (response?.ok) {
-        setIsDelete(true);
+        setDeletedId(taskId)
         toast.success("Task deleted successfully");
       }
     } catch (error) {

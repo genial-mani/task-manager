@@ -1,6 +1,5 @@
 "use client";
 import { IoAdd } from "react-icons/io5";
-import { MdFilterAlt } from "react-icons/md";
 import { MdOutlineSort } from "react-icons/md";
 import { useEffect, useRef, useState } from "react";
 import Task from "@/components/Task";
@@ -11,31 +10,26 @@ import { motion } from "motion/react";
 import { priorityValues } from "@/utils/helpers";
 import Loading from "@/components/Loading";
 import NotFound from "@/components/NotFound";
-import { getSocket, initiateSocket } from "@/utils/socket";
 import { Icon } from "@iconify/react";
+import useTaskStore from "@/hooks/useTaskStore";
 
 export default function Tasks() {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  // const [tasks, setNewTasks] = useState<TaskType[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<TaskType[]>([]);
   const [priorityFilters, setPriorityFilters] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>("pending");
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  const [newTask, setNewTask] = useState<TaskType | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
-  const [isDeletedId, setIsDeletedId] = useState<string>("");
   const filterDropdownRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
   const sortDropdownRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (newTask) {
-      setTasks((prev) => [newTask, ...prev]);
-    }
-  }, [newTask]);
+  const ztasks = useTaskStore((state) => state.tasks);
+  const setTasks = useTaskStore((state) => state.setTasks);
 
   useEffect(() => {
     const fetchAllTasks = async () => {
@@ -97,7 +91,7 @@ export default function Tasks() {
   };
 
   useEffect(() => {
-    const filtered = tasks?.filter((t) => {
+    const filtered = ztasks?.filter((t) => {
       const priorityMatch =
         priorityFilters?.length > 0
           ? priorityFilters?.includes(t?.priority)
@@ -107,7 +101,7 @@ export default function Tasks() {
     });
     setFilteredTasks(sortTasks(filtered));
     console.log(sortBy);
-  }, [priorityFilters, statusFilter, tasks, sortBy]);
+  }, [priorityFilters, statusFilter, ztasks, sortBy]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -133,33 +127,6 @@ export default function Tasks() {
       window.removeEventListener("click", handleOutsideClick);
     };
   }, []);
-
-  useEffect(() => {
-    if (isDeletedId !== "") {
-      setTasks((prev) => prev?.filter((p) => p?.id !== isDeletedId));
-      setIsDeletedId("");
-    }
-  }, [isDeletedId]);
-
-  useEffect(() => {
-  initiateSocket(); // ensure socket connection
-  const socket = getSocket();
-
-  const handleTaskDone = (taskId: string) => {
-    setTasks(prev =>
-      prev.map(task =>
-        task.id === taskId ? { ...task, status: "finished" } : task
-      )
-    );
-    // toast.success(`Task marked as done`);
-  };
-
-  socket.on("task-done", handleTaskDone);
-
-  return () => {
-    socket.off("task-done", handleTaskDone);
-  };
-}, []);
 
 
   const sortTasks = (tasksToSort: TaskType[]) => {
@@ -203,7 +170,7 @@ export default function Tasks() {
             isFormOpen ? "fixed" : "hidden"
           } w-full max-w-full min-h-screen top-0 left-0 bg-eerie-black bg-opacity-60 z-50`}
         >
-          <TaskForm setNewTask={setNewTask} setIsFormOpen={setIsFormOpen} />
+          <TaskForm setIsFormOpen={setIsFormOpen} />
         </motion.div>
         <div className="relative flex items-center justify-center gap-10 pr-5">
           <motion.div
@@ -357,14 +324,13 @@ export default function Tasks() {
           </motion.div>
         </div>
       </div>
-      {tasks?.length > 0 ? (
+      {ztasks?.length > 0 ? (
         <div className="w-full max-w-2xl pt-5 mx-auto mb-5">
           {filteredTasks?.length > 0 ? (
             filteredTasks?.map((task: TaskType) => (
               <Task
                 task={task}
                 key={task?.id}
-                setIsDeletedId={setIsDeletedId}
               />
             ))
           ) : (

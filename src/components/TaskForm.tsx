@@ -11,13 +11,11 @@ import React, {
   useState,
 } from "react";
 import dayjs from "dayjs";
-import { TaskType } from "@/utils/Interfaces";
+import useTaskStore from "@/hooks/useTaskStore";
 
 export default function TaskForm({
-  setNewTask,
   setIsFormOpen,
 }: {
-  setNewTask: Dispatch<SetStateAction<TaskType | null>>;
   setIsFormOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [taskPriority, setPriority] = useState<string>("FIVE");
@@ -29,6 +27,7 @@ export default function TaskForm({
     start: null,
     end: null,
   });
+  const addTask = useTaskStore((state)=> state.addTask)
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -56,7 +55,7 @@ export default function TaskForm({
         return;
       }
       const data = await response?.json();
-      setNewTask(data?.task);
+      addTask(data?.task);
       setFormData({
         title: "",
         desc: "",
@@ -105,7 +104,6 @@ export default function TaskForm({
           name="title"
           placeholder="title"
           required
-          autoFocus
           className="w-full px-3 py-2 rounded-md"
           value={formData?.title}
           onChange={handleOnChange}

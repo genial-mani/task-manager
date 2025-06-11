@@ -8,19 +8,20 @@ import Link from "next/link";
 import CompleteTask from "./CompleteTask";
 import { toast } from "sonner";
 import DeleteTask from "./DeleteTask";
+import useTaskStore from "@/hooks/useTaskStore";
 export default function Task({
   task,
-  setIsDeletedId,
 }: {
   task: TaskType;
-  setIsDeletedId: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [isDone, setIsDone] = useState<boolean>(false);
-  const [isDelete, setIsDelete] = useState<boolean>(false);
   const sound = new Howl({
     src: ["/pop-sound-effect.mp3"],
     volume: 0.3,
   });
+
+  const deletedId = useTaskStore((state)=> state.deletedId);
+
   useEffect(() => {
     if (isDone) {
       toast.success("task is done");
@@ -28,17 +29,11 @@ export default function Task({
     }
   }, [isDone]);
 
-  useEffect(() => {
-    if (isDelete) {
-      setIsDeletedId(task?.id);
-    }
-  }, [isDelete]);
-
   return (
     <motion.div
       initial={{ y: 0, opacity: 0, scale: 0.5 }}
       animate={
-        isDone || isDelete ? { y: -20, opacity: 0, display: "none" } : {}
+        task?.status === 'completed' || task?.id === deletedId ? { y: -20, opacity: 0, display: "none" } : {}
       }
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.3, ease: "backInOut" }}
@@ -85,7 +80,7 @@ export default function Task({
           </div>
         </div>
       </Link>
-      <DeleteTask taskId={task?.id} setIsDelete={setIsDelete} />
+      <DeleteTask taskId={task?.id} />
     </motion.div>
   );
 }

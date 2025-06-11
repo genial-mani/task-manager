@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "socket": "node --loader ts-node/esm socket/server.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -30,7 +29,8 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "sonner": "^1.7.1",
-    "year": "^0.2.1"
+    "year": "^0.2.1",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
