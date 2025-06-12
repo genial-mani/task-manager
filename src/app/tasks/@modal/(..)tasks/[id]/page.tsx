@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import PrioritySelector from "@/components/PrioritySelector";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
+import useTaskStore from "@/hooks/useTaskStore";
 
 export default function TaskModal({
   params,
@@ -25,6 +26,8 @@ export default function TaskModal({
   });
   const onClickRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
+
+  const updateTask = useTaskStore((state)=> state.updateTask)
 
   useEffect(()=>{
     if(taskPriority){
@@ -99,6 +102,7 @@ export default function TaskModal({
         toast.error(data?.error);
       }
       const data = await response?.json();
+      updateTask(data?.updatedTask);
       toast.success(data?.message);
     } catch (error) {
       

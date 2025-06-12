@@ -37,17 +37,17 @@ export function priorityFlag(p: string): string {
 export const priority = (p: string): string => {
     switch (p) {
       case "ONE":
-        return "Urgent";
+        return "urgent";
       case "TWO":
-        return "High";
+        return "high";
       case "THREE":
-        return "Medium";
+        return "medium";
       case "FOUR":
-        return "Low";
+        return "low";
       case "FIVE":
-        return "Normal";
+        return "normal";
       default:
-        return "Normal";
+        return "normal";
     }
   };
 export const priorityValues = (p: string): number => {

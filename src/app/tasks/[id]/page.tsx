@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import dayjs from "dayjs";
 import PrioritySelector from "@/components/PrioritySelector";
 import Loading from "@/components/Loading";
+import useTaskStore from "@/hooks/useTaskStore";
 
 export default function TaskPage({
   params,
@@ -24,6 +25,10 @@ export default function TaskPage({
     start: task?.start,
     end: task?.end,
   });
+
+  const updateTask = useTaskStore((state)=> state.updateTask);
+
+
   useEffect(() => {
     if (taskPriority) {
       setFormData((prev) => ({
@@ -82,6 +87,7 @@ export default function TaskPage({
         toast.error(data?.error);
       }
       const data = await response?.json();
+      updateTask(data?.updatedTask);
       toast.success(data?.message);
     } catch (error) {}
   };

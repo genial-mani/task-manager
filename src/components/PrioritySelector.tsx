@@ -59,7 +59,7 @@ export default function PrioritySelector({ taskPriority, setPriority}: { taskPri
             }}
           >
             <TiFlag size={20} color={priorityFlag(value)} />
-            <p>Priority {index + 1}</p>
+            <p>{priority(value)}</p>
           </div>
         ))}
       </div>

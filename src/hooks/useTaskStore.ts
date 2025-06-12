@@ -7,6 +7,7 @@ interface TaskStore {
     setTasks: (tasks: TaskType[])=> void,
     addTask: (task: TaskType)=> void,
     taskDone: (id: string)=> void,
+    updateTask: (updatedTask: TaskType)=> void,
     deletedId: (string | null),
     setDeletedId: (id: string | null)=> void,
 }
@@ -20,6 +21,9 @@ const useTaskStore =  create<TaskStore>()(
     })),
     taskDone: (id: string)=> set((state)=> ({
         tasks: state.tasks.map((task)=> task.id === id ? {...task, status: 'completed'} : task)
+    })),
+    updateTask: (updatedTask: TaskType)=> set((state)=>({
+        tasks: state.tasks.map((task)=> task?.id === updatedTask?.id ? {...task, ...updatedTask}: task)
     })),
     deletedId: null,
     setDeletedId: (id: string | null)=> set({deletedId: id}),
