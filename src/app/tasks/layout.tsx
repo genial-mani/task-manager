@@ -1,4 +1,4 @@
-export default function TasksLayout(props: {
+export default async function TasksLayout(props: {
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {

@@ -4,6 +4,7 @@ import prisma from "@/utils/prismaClient";
 import bcrypt from 'bcrypt'
 import { jwtSignin } from "@/utils/jwt";
 import { userType } from '@/utils/Interfaces';
+import { createDefaultCategories } from '@/utils/createDefaultCategories';
 
 
 
@@ -35,6 +36,11 @@ export async function POST(req: NextRequest){
                 password: hashedPassword,
             },
         });
+
+
+        // creating default task categories for user (personal, work, professional)
+        await createDefaultCategories(newUser.id);
+
 
         const token = await jwtSignin({email: newUser.email, id: newUser.id});
 

@@ -20,10 +20,16 @@ export interface TaskType{
     desc:       string,
     status:     string,
     priority:   string,
+    category:   CategoryType,
     start:      number,
     end:        number,
     createdAt:  number,
     updatedAt:  number,
+}
+
+export interface CategoryType{
+    id:         string,
+    name:       string,
 }
 
 export interface userType{

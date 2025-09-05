@@ -7,24 +7,43 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('token')?.value;
     // console.log('Token from middleware:', token);
     
-    const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login');
+    const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.startsWith('/signup');
 
     if (isProtectedRoute) {
     if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const response = NextResponse.redirect(new URL('/login', request.url));
+      response.cookies.delete('user');
+      return response;
     }
 
-    const payload = await jwtVerify(token);
-    if (!payload) {
+    try {
+      const payload = await jwtVerify(token);
+      if (!payload) {
+        const response = NextResponse.redirect(new URL('/login', request.url));
+        response.cookies.delete('token');
+        response.cookies.delete('user');
+        return response;
+      }
+    } catch (error) {
+      console.error('JWT verification failed:', error);
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.delete('token');
+      response.cookies.delete('user');
       return response;
     }
 
   } else {
-    const payload = await jwtVerify(token as string);
-    if (token && payload) {
-      return NextResponse.redirect(new URL('/tasks', request.url));
+    console.log('Public route accessed:', request.nextUrl.pathname);
+    if (token) {
+      try {
+        const payload = await jwtVerify(token);
+        console.log('Payload on public route:', payload);
+        if (payload) {
+          return NextResponse.redirect(new URL('/tasks', request.url));
+        }
+      } catch (error) {
+        console.error('JWT verification failed on public route:', error);
+      }
     }
   }
 
@@ -33,6 +52,10 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*', '/tasks/:path*','/login'],
+    matcher: ['/dashboard/:path*', '/tasks/:path*','/login', '/signup'],
     runtime: 'nodejs',
 };
+
+// user localstorage of other websites present in the browser sighup page confused 
+// and sent user without token in to tasks page then that tasks page sent the user to login page. 
+// this cycle doesn't allow user to signup page so be carefully to solve this

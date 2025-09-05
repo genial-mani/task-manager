@@ -1,4 +1,4 @@
-import { formatDate, priority, priorityFlag, taskbg } from "@/utils/helpers";
+import { formatDate, priority, priorityFlag } from "@/utils/helpers";
 import { TaskType } from "@/utils/Interfaces";
 import { TiFlag } from "react-icons/ti";
 import { useEffect, useState } from "react";
@@ -39,7 +39,7 @@ export default function Task({
       transition={{ duration: 0.3, ease: "backInOut" }}
       viewport={{ once: true, amount: 0.2 }}
       className={`w-full max-w-2xl h-44 rounded-xl text-seasalt px-3 py-2 flex items-start gap-2 shrink-0 mt-5`}
-      style={{ backgroundColor: taskbg(task?.priority) }}
+      // style={{ backgroundColor: taskbg(task?.priority) }}
     >
       {task?.status === "pending" && (
         <CompleteTask taskId={task?.id} setIsDone={setIsDone} />
@@ -51,6 +51,7 @@ export default function Task({
               {task?.title.length <= 45
                 ? task?.title
                 : task?.title.slice(0, 45) + "..."}
+                {task?.category && <span className="text-sm text-purple-500">#{task?.category?.name}</span>}
             </h2>
           </div>
           <p className="text-eerie-black">

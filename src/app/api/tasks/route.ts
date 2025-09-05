@@ -30,7 +30,8 @@ export async function GET(req: NextRequest) {
         const userWithTasks = await prisma.user.findUnique({
             where: {id: user?.userId},
             include:{tasks: {
-                orderBy: {createdAt: 'desc'}
+                orderBy: {createdAt: 'desc'},
+                include: {category: true}
             }},
         });
         const userWithCompletedTasks = await prisma.user.findUnique({
@@ -56,14 +57,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest){
     try {
-        const { title, desc="", status="pending", priority="FIVE", start=null,end=null} = await req.json();
-        // console.log("post 2")
-        // console.log("title:", title);
-        // console.log("desc:", desc);
-        // console.log("status:", status);
-        // console.log("pri:", priority);
-        // console.log("satrt:", start);
-        // console.log("end:", end);
+        const { title, desc="", status="pending", priority="FIVE",categoryId=null, start=null,end=null} = await req.json();
         const trimmedTitle = title?.trim();
         const trimmedDesc = desc?.trim();
 
@@ -98,8 +92,15 @@ export async function POST(req: NextRequest){
 
     const userId = user?.userId;
 
-//     console.log("Before task creation - start:", start);
-// console.log("Before task creation - end:", end);
+    if(!categoryId) return NextResponse.json({error: "Category is required."},{status: 400});
+    
+    const categoryExists = await prisma.category.findFirst({
+        where: {id: categoryId, userId: userId}
+    })
+
+    if(!categoryExists) return NextResponse.json({error: "Category does not exist."},{status: 400});
+
+
 
     const task = await prisma.task.create({
         data:{
@@ -107,11 +108,17 @@ export async function POST(req: NextRequest){
             desc: trimmedDesc,
             status,
             priority,
+            categoryId: categoryId,
             start,
             end,
             userId,
-        }
+        },
+        include: {category: true}
     });
+
+    
+
+    console.log("Created task:", task);
 
 
     return NextResponse.json({task,message: "Task added."},{status: 201});
